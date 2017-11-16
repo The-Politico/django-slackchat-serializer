@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from markslack import MarkSlack
+
 from slackchat.models import Channel, Message, User
 
 marker = MarkSlack()
 
 
 def handle(id, event):
-    print('start', event)
     if event.get('type', None) != 'message':
         return False
 

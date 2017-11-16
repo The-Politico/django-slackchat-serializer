@@ -119,3 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SLACKCHAT_SLACK_VERIFICATION_TOKEN = os.getenv(
+    'SLACK_VERIFICATION_TOKEN', None)
+SLACKCHAT_SLACK_API_TOKEN = os.getenv('SLACK_API_TOKEN', None)

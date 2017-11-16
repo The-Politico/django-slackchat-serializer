@@ -6,8 +6,8 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-politico-slackchat',
-    version='0.1',
-    packages=find_packages(where='slackchat'),
+    version='0.0.1',
+    packages=find_packages(exclude=('example',)),
     include_package_data=True,
     license='',
     description='Django app to integrate with Slack messages in a channel.',
@@ -24,8 +24,10 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
+        'django',
         'djangorestframework',
         'markdown',
         'markslack',
+        'slackclient',
     ]
 )

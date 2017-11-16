@@ -1,12 +1,15 @@
-import os
-
+from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .handlers.messages import handle
 
-SLACK_VERIFICATION_TOKEN = os.getenv('SLACK_VERIFICATION_TOKEN', None)
+SLACK_VERIFICATION_TOKEN = getattr(
+    settings,
+    'SLACKCHAT_SLACK_VERIFICATION_TOKEN',
+    None
+)
 
 
 class Events(APIView):

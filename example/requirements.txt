@@ -1,5 +1,5 @@
 Django==1.11.7
--e git+git@github.com:The-Politico/django-politico-slackchat.git@54903195bc6d967af1ffcbb3b33836b570bc0775#egg=django_politico_slackchat
+-e git+git@github.com:The-Politico/django-politico-slackchat.git@cd7a0b15f00a5565913a8b8f01dedf6cf18584fe#egg=django_politico_slackchat
 djangorestframework==3.7.3
 emoji==0.4.5
 Markdown==2.6.9
