@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .handlers.messages import handle
+from .handlers.messages import handle as handle_message
+from .handlers.reactions import handle as handle_reaction
 
 SLACK_VERIFICATION_TOKEN = getattr(
     settings,
@@ -28,6 +29,11 @@ class Events(APIView):
         if 'event' in slack_message:
             id = slack_message.get('event_id')
             event = slack_message.get('event')
-            handle(id, event)
+
+            if event.get('type') == 'message':
+                handle_message(id, event)
+
+            if event.get('type') == 'reaction_added':
+                handle_reaction(id, event)
 
         return Response(status=status.HTTP_200_OK)
