@@ -8,10 +8,15 @@ marker = MarkSlack()
 
 
 def handle(id, event):
+    print(event)
     if event.get('type', None) != 'message':
         return False
 
     subtype = event.get('subtype', None)
+
+    if subtype == 'group_join':
+        return False
+
     if subtype:
         msg = {
             'user': event.get('previous_message').get('user'),
@@ -27,14 +32,14 @@ def handle(id, event):
 
     try:
         channel = Channel.objects.get(
-            id=event.get('channel')
+            api_id=event.get('channel')
         )
     except Exception as e:
         print('Not registered channel', event.get('channel'), e)
         return False
 
     user, created = User.objects.get_or_create(
-        id=msg['user']
+        api_id=msg['user']
     )
 
     if subtype == 'message_deleted':
