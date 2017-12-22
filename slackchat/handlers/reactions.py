@@ -2,7 +2,7 @@ from datetime import datetime
 
 from markslack import MarkSlack
 
-from slackchat.models import Channel, Reaction, Message, User
+from slackchat.models import Action, Channel, Reaction, Message, User
 
 marker = MarkSlack()
 
@@ -44,10 +44,17 @@ def handle(id, event):
         api_id=event.get('user')
     )
 
+    reaction_kwargs = {
+        'timestamp': datetime.fromtimestamp(float(event.get('event_ts'))),
+        'message': message,
+        'reaction': event.get('reaction'),
+        'user': reaction_user
+    }
+    
+    try:
+        action = Action.objects.get(character=event.get('reaction'))
+        reaction_kwargs['action'] = action
+    except:
+        pass
 
-    Reaction.objects.update_or_create(
-        timestamp=datetime.fromtimestamp(float(event.get('event_ts'))),
-        message=message,
-        reaction=event.get('reaction'),
-        user=reaction_user
-    )
+    Reaction.objects.update_or_create(**reaction_kwargs)

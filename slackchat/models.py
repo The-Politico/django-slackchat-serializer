@@ -31,6 +31,8 @@ class User(models.Model):
 class ChatType(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
 
 class Channel(models.Model):
     def fetch_slack_users():
@@ -94,6 +96,13 @@ class Action(models.Model):
     character = models.CharField(max_length=100)
     chat_type = models.ForeignKey(ChatType)
     role = models.ForeignKey(Role, null=True, blank=True)
+
+    def __str__(self):
+        return ':{1}: = {0} for chat type {2}'.format(
+            self.action_tag,
+            self.character,
+            self.chat_type
+        )
 
 
 class Reaction(models.Model):
