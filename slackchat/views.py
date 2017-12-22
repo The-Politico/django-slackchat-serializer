@@ -2,6 +2,7 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_docs.views import DRFDocsView
 
 from .handlers.messages import handle as handle_message
 from .handlers.reactions import handle as handle_reaction
@@ -37,3 +38,18 @@ class Events(APIView):
                 handle_reaction(id, event)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class DRFDocsCustomView(DRFDocsView):
+    template_name = "consultpoll/api_docs.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(DRFDocsCustomView, self).get_context_data(**kwargs)
+        context['endpoints'] = [
+            endpoint for endpoint in
+            context['endpoints'] if endpoint.callback.cls in (
+                SeriesViewSet, PollViewSet, QuestionViewSet,
+                AnswerViewSet, ResponseViewSet
+            )
+        ]
+        return context

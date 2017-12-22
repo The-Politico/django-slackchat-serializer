@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Action, Channel, ChatType, Message, Reaction, User
+from .models import Action, Channel, ChatType, Message, Reaction, Reply, User
 
 
 class ChannelAdmin(admin.ModelAdmin):
@@ -12,4 +12,5 @@ admin.site.register(Channel, ChannelAdmin)
 admin.site.register(User)
 admin.site.register(Message)
 admin.site.register(Reaction)
+admin.site.register(Reply)
 admin.site.register(ChatType)
