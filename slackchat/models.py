@@ -34,6 +34,7 @@ class ChatType(models.Model):
     def __str__(self):
         return self.name
 
+
 class Channel(models.Model):
     def fetch_slack_users():
         client = SlackClient(TOKEN)
@@ -87,7 +88,7 @@ class Reply(models.Model):
     # todo: custom class that is JSON serializable
     key = models.SlugField(max_length=30)
     value = models.TextField()
-    message = models.ForeignKey(Message)
+    message = models.ForeignKey(Message, related_name='replies')
     user = models.ForeignKey(User)
 
 
