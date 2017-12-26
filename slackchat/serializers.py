@@ -88,12 +88,39 @@ class ReplySerializer(serializers.ModelSerializer):
         )
 
 
+class MarkupContentSerializer(serializers.ModelSerializer):
+    original_message_timestamp = serializers.SerializerMethodField()
+    user = UserSerializer()
+    action_tag = serializers.SerializerMethodField()
+    flow = serializers.SerializerMethodField()
+
+    def get_original_message_timestamp(self, obj):
+        return obj.message.timestamp
+
+    def get_action_tag(self, obj):
+        return obj.message_markup.action_tag
+
+    def get_flow(self, obj):
+        return obj.message_markup.flow
+
+    class Meta:
+        model = MarkupContent
+        fields = (
+            'action_tag',
+            'flow',
+            'original_message_timestamp',
+            'user',
+            'content'
+        )
+
+
 class ChannelSerializer(serializers.ModelSerializer):
     chat_type = ChatTypeSerializer()
     messages = MessageSerializer(many=True)
     reactions = serializers.SerializerMethodField()
     actions = serializers.SerializerMethodField()
     replies = serializers.SerializerMethodField()
+    markups = serializers.SerializerMethodField()
 
     def get_reactions(self, obj):
         reactions = []
@@ -124,6 +151,15 @@ class ChannelSerializer(serializers.ModelSerializer):
 
         return replies
 
+    def get_markups(self, obj):
+        markups = []
+        for message in obj.messages.all():
+            for markup in message.markups.all():
+                serializer = MarkupContentSerializer(instance=markup)
+                markups.append(serializer.data)
+
+        return markups
+
     class Meta:
         model = Channel
         fields = (
@@ -132,5 +168,6 @@ class ChannelSerializer(serializers.ModelSerializer):
             'messages',
             'reactions',
             'actions',
-            'replies'
+            'replies',
+            'markups'
         )

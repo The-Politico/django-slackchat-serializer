@@ -84,13 +84,26 @@ def handle(id, event):
             }
         )
 
-        check_markup(message)
+        check_markup(message, user)
 
 
-def check_markup(message):
+def check_markup(message, user):
     for markup in MessageMarkup.objects.all():
         if markup.regex:
-            pass
+            m = re.search(markup.search_string, message.text)
+            if m:
+                markup_json = markup.content_template
+                markup_json['value'] = message.text
+
+                MarkupContent.objects.update_or_create(
+                    message=message,
+                    message_markup=markup,
+                    user=user,
+                    defaults={
+                        'content': markup_json
+                    }
+                )
+
         else:
             if markup.search_string in message.text:
                 markup_json = markup.content_template
@@ -99,6 +112,7 @@ def check_markup(message):
                 MarkupContent.objects.update_or_create(
                     message=message,
                     message_markup=markup,
+                    user=user,
                     defaults={
                         'content': markup_json
                     }

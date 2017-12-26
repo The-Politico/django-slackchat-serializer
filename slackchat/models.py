@@ -62,11 +62,22 @@ class Role(models.Model):
     name = models.CharField(max_length=255)
     chat_type = models.ForeignKey(ChatType, related_name="roles")
 
+    def __str__(self):
+        return self.name
+
 
 class RoleAssignment(models.Model):
     assignment = models.ForeignKey(User, related_name='assignments')
     role = models.ForeignKey(Role, related_name='assignments')
     channel = models.ForeignKey(Channel, related_name='assignments')
+
+    def __str__(self):
+        return 'User {0} {1} assigned Role {2} for channel {3}'.format(
+            self.assignment.first_name,
+            self.assignment.last_name,
+            self.role.name,
+            self.channel.name
+        )
 
 
 class Message(models.Model):
@@ -90,6 +101,9 @@ class Reply(models.Model):
     value = models.TextField()
     message = models.ForeignKey(Message, related_name='replies')
     user = models.ForeignKey(User)
+
+    def __str__(self):
+        return '{0}: {1}'.format(self.key, self.value)
 
 
 class Action(models.Model):
@@ -125,6 +139,12 @@ class Reaction(models.Model):
         else:
             return True
 
+    def __str__(self):
+        return ':{0}:, reaction to "{1}"'.format(
+            self.reaction,
+            self.message.text
+        )
+
 
 class MessageMarkup(models.Model):
     IN_FLOW = 'I'
@@ -149,8 +169,15 @@ class MessageMarkup(models.Model):
     )
     content_template = JSONField()
 
+    def __str__(self):
+        return self.name
+
 
 class MarkupContent(models.Model):
     message_markup = models.ForeignKey(MessageMarkup)
-    message = models.ForeignKey(Message)
+    message = models.ForeignKey(Message, related_name='markups')
+    user = models.ForeignKey(User)
     content = JSONField()
+
+    def __str__(self):
+        return self.message.text
