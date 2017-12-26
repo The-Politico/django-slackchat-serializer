@@ -1,8 +1,11 @@
+import re
+
 from datetime import datetime
 
 from markslack import MarkSlack
 
-from slackchat.models import Channel, Message, Reply, User
+from slackchat.models import (Channel, MarkupContent, MessageMarkup,
+                              Message, Reply, User)
 
 marker = MarkSlack()
 
@@ -53,10 +56,10 @@ def handle(id, event):
             key = msg['text'].split(': ')[0]
             value = msg['text'].split(': ')[1]
         except Exception as e:
-            print('Could not split into key/value pair', msg['text'], e)
+            print('Could not split reply into key/value pair', msg['text'], e)
             return False
-        
-        try: 
+
+        try:
             original_message = Message.objects.get(
                 timestamp=datetime.fromtimestamp(float(event.get('thread_ts')))
             )
@@ -72,7 +75,7 @@ def handle(id, event):
             value=value
         )
     else:
-        Message.objects.update_or_create(
+        message, created = Message.objects.update_or_create(
             channel=channel,
             timestamp=datetime.fromtimestamp(float(msg['ts'])),
             user=user,
@@ -80,3 +83,23 @@ def handle(id, event):
                 'text': marker.mark(msg['text'])
             }
         )
+
+        check_markup(message)
+
+
+def check_markup(message):
+    for markup in MessageMarkup.objects.all():
+        if markup.regex:
+            pass
+        else:
+            if markup.search_string in message.text:
+                markup_json = markup.content_template
+                markup_json['value'] = message.text
+
+                MarkupContent.objects.update_or_create(
+                    message=message,
+                    message_markup=markup,
+                    defaults={
+                        'content': markup_json
+                    }
+                )
