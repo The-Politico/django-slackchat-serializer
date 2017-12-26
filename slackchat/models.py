@@ -9,6 +9,10 @@ TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
 
 
 class User(models.Model):
+    """
+    A Slack user that participates in a channel.
+    """
+
     api_id = models.CharField(max_length=50)
 
     first_name = models.CharField(max_length=100, blank=True, null=True)
@@ -29,6 +33,10 @@ class User(models.Model):
 
 
 class ChatType(models.Model):
+    """
+    A type of Slack chat
+    """
+
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -36,6 +44,10 @@ class ChatType(models.Model):
 
 
 class Channel(models.Model):
+    """
+    A Slack channel that facilitates a live chat
+    """
+
     def fetch_slack_users():
         client = SlackClient(TOKEN)
         response = client.api_call("users.list")
@@ -59,6 +71,10 @@ class Channel(models.Model):
 
 
 class Role(models.Model):
+    """
+    A role, e.g. moderator, that is attached to a chat type.
+    """
+
     name = models.CharField(max_length=255)
     chat_type = models.ForeignKey(ChatType, related_name="roles")
 
@@ -67,6 +83,9 @@ class Role(models.Model):
 
 
 class RoleAssignment(models.Model):
+    """
+    Assigns a user to a role for a particular channel.
+    """
     assignment = models.ForeignKey(User, related_name='assignments')
     role = models.ForeignKey(Role, related_name='assignments')
     channel = models.ForeignKey(Channel, related_name='assignments')
@@ -81,6 +100,10 @@ class RoleAssignment(models.Model):
 
 
 class Message(models.Model):
+    """
+    A message inside of a Slack channel, assigned to a user.
+    """
+
     timestamp = models.DateTimeField(unique=True)
 
     channel = models.ForeignKey(Channel, related_name='messages')
@@ -94,12 +117,17 @@ class Message(models.Model):
         return str(self.html())
 
 
-class Reply(models.Model):
+class Tag(models.Model):
+    """
+    Attached through a message through a reply.
+    Expected to be a <key: value> format.
+    """
+
     timestamp = models.DateTimeField(unique=True)
     # todo: custom class that is JSON serializable
     key = models.SlugField(max_length=30)
     value = models.TextField()
-    message = models.ForeignKey(Message, related_name='replies')
+    message = models.ForeignKey(Message, related_name='tags')
     user = models.ForeignKey(User)
 
     def __str__(self):
@@ -107,20 +135,29 @@ class Reply(models.Model):
 
 
 class Action(models.Model):
+    """
+    A type of Reaction on a message that occurs
+    when a specific emoji is applied.
+
+    Actions are defined per ChatType.
+    """
     action_tag = models.SlugField(max_length=255)
     character = models.CharField(max_length=100)
     chat_type = models.ForeignKey(ChatType)
     role = models.ForeignKey(Role, null=True, blank=True)
 
     def __str__(self):
-        return ':{1}: = {0} for chat type {2}'.format(
-            self.action_tag,
+        return ':{0}: = {1} for chat type {2}'.format(
             self.character,
+            self.action_tag,
             self.chat_type
         )
 
 
 class Reaction(models.Model):
+    """
+    An emoji reaction to a message in Slack.
+    """
     timestamp = models.DateTimeField(unique=True)
     message = models.ForeignKey(Message, related_name='reactions')
     reaction = models.CharField(max_length=150)
@@ -146,7 +183,11 @@ class Reaction(models.Model):
         )
 
 
-class MessageMarkup(models.Model):
+class CustomMessageTemplate(models.Model):
+    """
+    Defines search parameters for finding custom messages
+    and a template for how to serialize the message
+    """
     IN_FLOW = 'I'
     OUT_FLOW = 'O'
     BOTH = 'B'
@@ -173,9 +214,12 @@ class MessageMarkup(models.Model):
         return self.name
 
 
-class MarkupContent(models.Model):
-    message_markup = models.ForeignKey(MessageMarkup)
-    message = models.ForeignKey(Message, related_name='markups')
+class CustomMessage(models.Model):
+    """
+    An instance of a CustomMessageTemplate
+    """
+    message_markup = models.ForeignKey(CustomMessageTemplate)
+    message = models.ForeignKey(Message, related_name='custom_messages')
     user = models.ForeignKey(User)
     content = JSONField()
 

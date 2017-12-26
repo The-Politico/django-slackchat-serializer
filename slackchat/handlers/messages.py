@@ -4,8 +4,8 @@ from datetime import datetime
 
 from markslack import MarkSlack
 
-from slackchat.models import (Channel, MarkupContent, MessageMarkup,
-                              Message, Reply, User)
+from slackchat.models import (Channel, CustomMessageTemplate, CustomMessage,
+                              Message, Tag, User)
 
 marker = MarkSlack()
 
@@ -67,7 +67,7 @@ def handle(id, event):
             print('Unknown message replied to:', event.get('thread_ts'), e)
             return False
 
-        Reply.objects.update_or_create(
+        Tag.objects.update_or_create(
             timestamp=datetime.fromtimestamp(float(msg['ts'])),
             message=original_message,
             user=user,
@@ -88,14 +88,14 @@ def handle(id, event):
 
 
 def check_markup(message, user):
-    for markup in MessageMarkup.objects.all():
+    for markup in CustomMessageTemplate.objects.all():
         if markup.regex:
             m = re.search(markup.search_string, message.text)
             if m:
                 markup_json = markup.content_template
                 markup_json['value'] = message.text
 
-                MarkupContent.objects.update_or_create(
+                CustomMessage.objects.update_or_create(
                     message=message,
                     message_markup=markup,
                     user=user,
@@ -109,7 +109,7 @@ def check_markup(message, user):
                 markup_json = markup.content_template
                 markup_json['value'] = message.text
 
-                MarkupContent.objects.update_or_create(
+                CustomMessage.objects.update_or_create(
                     message=message,
                     message_markup=markup,
                     user=user,
