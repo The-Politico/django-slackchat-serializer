@@ -50,11 +50,11 @@ def handle(id, event):
         'reaction': event.get('reaction'),
         'user': reaction_user
     }
-    
+
     try:
         action = Action.objects.get(character=event.get('reaction'))
         reaction_kwargs['action'] = action
-    except:
+    except Exception as e:
         pass
 
     Reaction.objects.update_or_create(**reaction_kwargs)
