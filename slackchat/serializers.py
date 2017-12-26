@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from .models import (User, ChatType, Channel, Message,
-                     Tag, Reaction, CustomMessage)
+from .models import User, Channel, Message, Tag, Reaction, CustomMessage
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,12 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
             'image',
             'title'
         )
-
-
-class ChatTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatType
-        fields = ('name',)
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -116,12 +109,15 @@ class CustomMessageSerializer(serializers.ModelSerializer):
 
 
 class ChannelSerializer(serializers.ModelSerializer):
-    chat_type = ChatTypeSerializer()
+    chat_type = serializers.SerializerMethodField()
     messages = MessageSerializer(many=True)
     reactions = serializers.SerializerMethodField()
     actions = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
     custom_messages = serializers.SerializerMethodField()
+
+    def get_chat_type(self, obj):
+        return obj.chat_type.name
 
     def get_reactions(self, obj):
         reactions = []
