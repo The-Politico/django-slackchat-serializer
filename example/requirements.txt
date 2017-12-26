@@ -1,7 +1,10 @@
 Django==1.11.7
 -e ./../
+dj-database-url==0.4.2
 djangorestframework==3.7.3
+django-rest-swagger==2.1.2
 emoji==0.4.5
 Markdown==2.6.9
 markslack==0.0.0a3
+psycopg2==2.7.3.2
 pytz==2017.3

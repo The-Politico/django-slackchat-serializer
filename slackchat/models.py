@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from markdown import markdown
 from slackclient import SlackClient
-from django.contrib.postgres.fields import JSONField
+from jsoneditor.fields.postgres_jsonfield import JSONField
 
 TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
 

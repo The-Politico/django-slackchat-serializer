@@ -1,8 +1,9 @@
 from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.schemas import SchemaGenerator
 from rest_framework.views import APIView
-from rest_framework_docs.views import DRFDocsView
+from rest_framework_swagger import renderers
 
 from .handlers.messages import handle as handle_message
 from .handlers.reactions import handle as handle_reaction
@@ -40,16 +41,14 @@ class Events(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class DRFDocsCustomView(DRFDocsView):
-    template_name = "consultpoll/api_docs.html"
+class SwaggerSchemaView(APIView):
+    renderer_classes = [
+        renderers.OpenAPIRenderer,
+        renderers.SwaggerUIRenderer
+    ]
 
-    def get_context_data(self, **kwargs):
-        context = super(DRFDocsCustomView, self).get_context_data(**kwargs)
-        context['endpoints'] = [
-            endpoint for endpoint in
-            context['endpoints'] if endpoint.callback.cls in (
-                SeriesViewSet, PollViewSet, QuestionViewSet,
-                AnswerViewSet, ResponseViewSet
-            )
-        ]
-        return context
+    def get(self, request):
+        generator = SchemaGenerator()
+        schema = generator.get_schema(request=request)
+
+        return Response(schema)
