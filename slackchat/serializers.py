@@ -7,6 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
+            'api_id',
             'first_name',
             'last_name',
             'image',
@@ -15,11 +16,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     reactions = serializers.SerializerMethodField()
     args = serializers.SerializerMethodField()
     kwargs = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        return obj.user.api_id
 
     def get_content(self, obj):
         if hasattr(obj, 'custom_message'):
@@ -69,17 +73,15 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class ReactionSerializer(serializers.ModelSerializer):
-    message_timestamp = serializers.SerializerMethodField()
-    user = UserSerializer()
+    user = serializers.SerializerMethodField()
 
-    def get_message_timestamp(self, obj):
-        return obj.message.timestamp
+    def get_user(self, obj):
+        return obj.user.api_id
 
     class Meta:
         model = Reaction
         fields = (
             'timestamp',
-            'message_timestamp',
             'reaction',
             'user'
         )
@@ -87,15 +89,32 @@ class ReactionSerializer(serializers.ModelSerializer):
 
 class ChannelSerializer(serializers.ModelSerializer):
     chat_type = serializers.SerializerMethodField()
+    users = serializers.SerializerMethodField()
     messages = MessageSerializer(many=True)
 
     def get_chat_type(self, obj):
         return obj.chat_type.name
+
+    def get_users(self, obj):
+        users = []
+
+        for message in obj.messages.all():
+            serializer = UserSerializer(instance=message.user)
+            if serializer.data not in users:
+                users.append(serializer.data)
+
+            for reaction in message.reactions.all():
+                serializer = UserSerializer(instance=reaction.user)
+                if serializer.data not in users:
+                    users.append(serializer.data)
+
+        return users
 
     class Meta:
         model = Channel
         fields = (
             'name',
             'chat_type',
+            'users',
             'messages',
         )
