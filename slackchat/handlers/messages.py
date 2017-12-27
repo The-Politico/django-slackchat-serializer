@@ -5,7 +5,7 @@ from datetime import datetime
 from markslack import MarkSlack
 
 from slackchat.models import (Channel, CustomMessageTemplate, CustomMessage,
-                              Message, Tag, User)
+                              Message, Key, User)
 
 marker = MarkSlack()
 
@@ -53,7 +53,7 @@ def handle(id, event):
         ).delete()
     elif event.get('thread_ts'):
         try:
-            key = msg['text'].split(': ')[0]
+            name = msg['text'].split(': ')[0]
             value = msg['text'].split(': ')[1]
         except Exception as e:
             print('Could not split reply into key/value pair', msg['text'], e)
@@ -67,11 +67,11 @@ def handle(id, event):
             print('Unknown message replied to:', event.get('thread_ts'), e)
             return False
 
-        Tag.objects.update_or_create(
+        Key.objects.update_or_create(
             timestamp=datetime.fromtimestamp(float(msg['ts'])),
             message=original_message,
             user=user,
-            key=key,
+            name=name,
             value=value
         )
     else:

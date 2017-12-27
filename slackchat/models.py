@@ -118,7 +118,7 @@ class Message(models.Model):
         return str(self.html())
 
 
-class Tag(models.Model):
+class Key(models.Model):
     """
     Attached through a message through a reply.
     Expected to be a <key: value> format.
@@ -126,7 +126,7 @@ class Tag(models.Model):
 
     timestamp = models.DateTimeField(unique=True)
     # todo: custom class that is JSON serializable
-    key = models.SlugField(max_length=30)
+    name = models.SlugField(max_length=30)
     value = models.TextField()
     message = models.ForeignKey(Message, related_name='tags')
     user = models.ForeignKey(User)

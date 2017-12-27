@@ -19,8 +19,8 @@ class MessageSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     reactions = serializers.SerializerMethodField()
-    args = serializers.SerializerMethodField()
-    kwargs = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    keys = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         return obj.user.api_id
@@ -29,6 +29,7 @@ class MessageSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'custom_message'):
             return obj.custom_message.content
         else:
+
             return obj.text
 
     def get_reactions(self, obj):
@@ -40,7 +41,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
         return reactions
 
-    def get_args(self, obj):
+    def get_tags(self, obj):
         args = []
 
         for reaction in obj.reactions.all():
@@ -52,11 +53,11 @@ class MessageSerializer(serializers.ModelSerializer):
 
         return args
 
-    def get_kwargs(self, obj):
+    def get_keys(self, obj):
         kwargs = {}
 
-        for tag in obj.tags.all():
-            kwargs[tag.key] = tag.value
+        for key in obj.keys.all():
+            kwargs[key.name] = key.value
 
         return kwargs
 
@@ -67,8 +68,8 @@ class MessageSerializer(serializers.ModelSerializer):
             'user',
             'content',
             'reactions',
-            'args',
-            'kwargs',
+            'tags',
+            'keys',
         )
 
 

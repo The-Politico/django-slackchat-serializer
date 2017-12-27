@@ -2,8 +2,8 @@ from django.contrib import admin
 from jsoneditor.forms import JSONEditor
 from jsoneditor.fields.postgres_jsonfield import JSONField
 
-from .models import (Action, Channel, ChatType, CustomMessageTemplate, Message,
-                     CustomMessage, Reaction, Tag, User)
+from .models import (Action, Channel, ChatType, CustomMessageTemplate,
+                     Message, CustomMessage, Reaction, Key, User)
 
 
 class ChannelAdmin(admin.ModelAdmin):
@@ -24,5 +24,5 @@ admin.site.register(CustomMessageTemplate)
 admin.site.register(CustomMessage)
 admin.site.register(Message)
 admin.site.register(Reaction)
-admin.site.register(Tag)
+admin.site.register(Key)
 admin.site.register(ChatType)
