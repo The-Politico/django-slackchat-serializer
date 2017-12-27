@@ -17,7 +17,7 @@ def handle(id, event):
 
     subtype = event.get('subtype', None)
 
-    if subtype == 'group_join':
+    if subtype in ['group_join', 'file_share']:
         return False
 
     if subtype:
@@ -88,16 +88,16 @@ def handle(id, event):
 
 
 def check_markup(message, user):
-    for markup in CustomMessageTemplate.objects.all():
-        if markup.regex:
-            m = re.search(markup.search_string, message.text)
+    for template in CustomMessageTemplate.objects.all():
+        if template.regex:
+            m = re.search(template.search_string, message.text)
             if m:
-                markup_json = markup.content_template
+                markup_json = template.content_template
                 markup_json['value'] = message.text
 
                 CustomMessage.objects.update_or_create(
                     message=message,
-                    message_markup=markup,
+                    message_template=template,
                     user=user,
                     defaults={
                         'content': markup_json
@@ -105,13 +105,13 @@ def check_markup(message, user):
                 )
 
         else:
-            if markup.search_string in message.text:
-                markup_json = markup.content_template
+            if template.search_string in message.text:
+                markup_json = template.content_template
                 markup_json['value'] = message.text
 
                 CustomMessage.objects.update_or_create(
                     message=message,
-                    message_markup=markup,
+                    message_template=template,
                     user=user,
                     defaults={
                         'content': markup_json

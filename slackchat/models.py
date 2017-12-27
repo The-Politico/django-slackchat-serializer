@@ -38,6 +38,7 @@ class ChatType(models.Model):
     """
 
     name = models.CharField(max_length=255)
+    render_to_html = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -188,26 +189,12 @@ class CustomMessageTemplate(models.Model):
     Defines search parameters for finding custom messages
     and a template for how to serialize the message
     """
-    IN_FLOW = 'I'
-    OUT_FLOW = 'O'
-    BOTH = 'B'
 
-    choices = (
-        (IN_FLOW, 'In flow'),
-        (OUT_FLOW, 'Out of flow'),
-        (BOTH, 'Both')
-    )
-
-    name = models.SlugField(max_length=255)
+    name = models.CharField(max_length=255)
+    custom_action = models.SlugField(max_length=255)
     search_string = models.CharField(max_length=255)
     regex = models.BooleanField(default=False)
     chat_type = models.ForeignKey(ChatType)
-    action_tag = models.SlugField(max_length=255)
-    flow = models.CharField(
-        max_length=1,
-        choices=choices,
-        default=IN_FLOW
-    )
     content_template = JSONField()
 
     def __str__(self):
@@ -218,8 +205,8 @@ class CustomMessage(models.Model):
     """
     An instance of a CustomMessageTemplate
     """
-    message_markup = models.ForeignKey(CustomMessageTemplate)
-    message = models.ForeignKey(Message, related_name='custom_messages')
+    message_template = models.ForeignKey(CustomMessageTemplate)
+    message = models.OneToOneField(Message, related_name='custom_message')
     user = models.ForeignKey(User)
     content = JSONField()
 
