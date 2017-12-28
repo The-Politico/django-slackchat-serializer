@@ -195,7 +195,6 @@ class CustomMessageTemplate(models.Model):
     name = models.CharField(max_length=255)
     custom_action = models.SlugField(max_length=255)
     search_string = models.CharField(max_length=255)
-    regex = models.BooleanField(default=False)
     chat_type = models.ForeignKey(ChatType)
     content_template = models.TextField()
 

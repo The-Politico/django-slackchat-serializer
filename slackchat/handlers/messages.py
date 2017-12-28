@@ -89,31 +89,16 @@ def handle(id, event):
 
 def check_markup(message, user):
     for template in CustomMessageTemplate.objects.all():
-        if template.regex:
-            m = re.search(template.search_string, message.text)
-            if m:
-                group_strings = [group for group in m.groups()]
-                content = template.content_template.format(*group_strings)
+        m = re.search(template.search_string, message.text)
+        if m:
+            group_strings = [group for group in m.groups()]
+            content = template.content_template.format(*group_strings)
 
-                CustomMessage.objects.update_or_create(
-                    message=message,
-                    message_template=template,
-                    user=user,
-                    defaults={
-                        'content': content
-                    }
-                )
-
-        else:
-            if template.search_string in message.text:
-                markup_json = template.content_template
-                markup_json['value'] = message.text
-
-                CustomMessage.objects.update_or_create(
-                    message=message,
-                    message_template=template,
-                    user=user,
-                    defaults={
-                        'content': markup_json
-                    }
-                )
+            CustomMessage.objects.update_or_create(
+                message=message,
+                message_template=template,
+                user=user,
+                defaults={
+                    'content': content
+                }
+            )
