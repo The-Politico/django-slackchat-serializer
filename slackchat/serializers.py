@@ -29,8 +29,10 @@ class MessageSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'custom_message'):
             return obj.custom_message.content
         else:
-
-            return obj.text
+            if obj.channel.chat_type.render_to_html:
+                return obj.html()
+            else:
+                return obj.text
 
     def get_reactions(self, obj):
         reactions = []
