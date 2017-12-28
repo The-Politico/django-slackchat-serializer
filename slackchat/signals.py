@@ -34,20 +34,17 @@ def create_private_channel(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Message)
-def notify_new_message(sender, instance, **kwargs):
-    data = {
-        'id': instance.channel.id
-    }
-    if WEBHOOK:
-        requests.post(WEBHOOK, data=data)
-
-
 @receiver(post_save, sender=Reaction)
 @receiver(post_save, sender=Key)
 @receiver(post_save, sender=CustomMessage)
-def notify_new_reaction(sender, instance, **kwargs):
+def notify_webhook(sender, instance, **kwargs):
+    if sender == Message:
+        instance_id = instance.channel.id
+    else:
+        instance_id = instance.message.channel.id
+
     data = {
-        'id': instance.message.channel.id
+        'id': instance_id
     }
     if WEBHOOK:
         requests.post(WEBHOOK, data=data)
