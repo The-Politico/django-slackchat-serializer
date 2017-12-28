@@ -117,6 +117,10 @@ class ChannelSerializer(serializers.ModelSerializer):
         model = Channel
         fields = (
             'name',
+            'title',
+            'description',
+            'keywords',
+            'image',
             'chat_type',
             'users',
             'messages',

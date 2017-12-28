@@ -60,7 +60,10 @@ class Channel(models.Model):
 
     api_id = models.SlugField(
         max_length=10, null=True, blank=True, editable=False)
-
+    title = models.CharField(max_length=150, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True)
+    keywords = models.CharField(max_length=300, blank=True, null=True)
     name = models.CharField(
         max_length=150, blank=True, null=True, editable=False)
     owner = models.CharField(max_length=200, choices=fetch_slack_users())
