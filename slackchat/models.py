@@ -11,6 +11,7 @@ class Webhook(models.Model):
     endpoint = models.URLField()
     verified = models.BooleanField(default=True)
 
+
 class User(models.Model):
     """
     A Slack user that participates in a channel.
