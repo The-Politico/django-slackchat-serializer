@@ -6,10 +6,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from slackclient import SlackClient
 
-from .models import Channel, Message, Reaction, Key, CustomMessage
+from .models import Channel, Message, Reaction, Key, CustomMessage, Webhook
 
 TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
-WEBHOOK = getattr(settings, 'SLACKCHAT_WEBHOOK', None)
 
 
 @receiver(post_save, sender=Channel)
@@ -46,5 +45,5 @@ def notify_webhook(sender, instance, **kwargs):
     data = {
         'id': instance_id
     }
-    if WEBHOOK:
-        requests.post(WEBHOOK, data=data)
+    for webhook in Webhook.objects.all():
+        requests.post(webhook.endpoint, data=data)

@@ -7,6 +7,10 @@ from slackclient import SlackClient
 TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
 
 
+class Webhook(models.Model):
+    endpoint = models.URLField()
+    verified = models.BooleanField()
+
 class User(models.Model):
     """
     A Slack user that participates in a channel.
