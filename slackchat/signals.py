@@ -39,7 +39,7 @@ def notify_new_message(sender, instance, **kwargs):
         'id': instance.channel.id
     }
     if WEBHOOK:
-        requests.post(WEBHOOK, data)
+        requests.post(WEBHOOK, data=data)
 
 
 @receiver(post_save, sender=Reaction)
@@ -50,4 +50,4 @@ def notify_new_reaction(sender, instance, **kwargs):
         'id': instance.message.channel.id
     }
     if WEBHOOK:
-        requests.post(WEBHOOK, data)
+        requests.post(WEBHOOK, data=data)
