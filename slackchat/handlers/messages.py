@@ -1,3 +1,4 @@
+import json
 import re
 
 from datetime import datetime
@@ -92,15 +93,15 @@ def check_markup(message, user):
         if template.regex:
             m = re.search(template.search_string, message.text)
             if m:
-                markup_json = template.content_template
-                markup_json['value'] = message.text
+                group_strings = [group for group in m.groups()]
+                content = template.content_template.format(*group_strings)
 
                 CustomMessage.objects.update_or_create(
                     message=message,
                     message_template=template,
                     user=user,
                     defaults={
-                        'content': markup_json
+                        'content': content
                     }
                 )
 

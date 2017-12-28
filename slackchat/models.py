@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from markdown import markdown
 from slackclient import SlackClient
-from jsoneditor.fields.postgres_jsonfield import JSONField
+from django.contrib.postgres.fields import JSONField
 
 TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
 
@@ -128,7 +128,7 @@ class Key(models.Model):
     # todo: custom class that is JSON serializable
     name = models.SlugField(max_length=30)
     value = models.TextField()
-    message = models.ForeignKey(Message, related_name='tags')
+    message = models.ForeignKey(Message, related_name='keys')
     user = models.ForeignKey(User)
 
     def __str__(self):
@@ -195,7 +195,7 @@ class CustomMessageTemplate(models.Model):
     search_string = models.CharField(max_length=255)
     regex = models.BooleanField(default=False)
     chat_type = models.ForeignKey(ChatType)
-    content_template = JSONField()
+    content_template = models.TextField()
 
     def __str__(self):
         return self.name
@@ -208,7 +208,7 @@ class CustomMessage(models.Model):
     message_template = models.ForeignKey(CustomMessageTemplate)
     message = models.OneToOneField(Message, related_name='custom_message')
     user = models.ForeignKey(User)
-    content = JSONField()
+    content = models.TextField()
 
     def __str__(self):
         return self.message.text
