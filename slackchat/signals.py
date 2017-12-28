@@ -46,4 +46,5 @@ def notify_webhook(sender, instance, **kwargs):
         'id': instance_id
     }
     for webhook in Webhook.objects.all():
-        requests.post(webhook.endpoint, data=data)
+        if webhook.verified:
+            requests.post(webhook.endpoint, data=data)

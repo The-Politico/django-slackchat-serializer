@@ -9,7 +9,7 @@ TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
 
 class Webhook(models.Model):
     endpoint = models.URLField()
-    verified = models.BooleanField()
+    verified = models.BooleanField(default=True)
 
 class User(models.Model):
     """
