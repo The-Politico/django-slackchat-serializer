@@ -1,3 +1,4 @@
+import requests
 import uuid
 
 from django.conf import settings
@@ -5,9 +6,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from slackclient import SlackClient
 
-from .models import Channel
+from .models import Channel, Message, Reaction, Key, CustomMessage
 
 TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
+WEBHOOK = getattr(settings, 'SLACKCHAT_WEBHOOK', None)
 
 
 @receiver(post_save, sender=Channel)
@@ -29,3 +31,23 @@ def create_private_channel(sender, instance, created, **kwargs):
                 user=instance.owner
             )
         instance.save()
+
+
+@receiver(post_save, sender=Message)
+def notify_new_message(sender, instance, **kwargs):
+    data = {
+        'id': instance.channel.id
+    }
+    if WEBHOOK:
+        requests.post(WEBHOOK, data)
+
+
+@receiver(post_save, sender=Reaction)
+@receiver(post_save, sender=Key)
+@receiver(post_save, sender=CustomMessage)
+def notify_new_reaction(sender, instance, **kwargs):
+    data = {
+        'id': instance.message.channel.id
+    }
+    if WEBHOOK:
+        requests.post(WEBHOOK, data)
