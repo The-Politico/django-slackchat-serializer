@@ -1,21 +1,20 @@
-import requests
 import uuid
 
-from django.conf import settings
+import requests
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from slackchat.conf import settings
 from slackclient import SlackClient
 
-from .models import Channel, Message, Reaction, Key, CustomMessage, Webhook
-
-TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
+from .models import Channel, CustomMessage, Key, Message, Reaction, Webhook
 
 
 @receiver(post_save, sender=Channel)
 def create_private_channel(sender, instance, created, **kwargs):
     if created:
         instance.name = uuid.uuid4().hex[:10]
-        client = SlackClient(TOKEN)
+        client = SlackClient(settings.SLACK_API_TOKEN)
         response = client.api_call(
             "conversations.create",
             name='slackchat-{}'.format(instance.name),

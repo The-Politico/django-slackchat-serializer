@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import (Action, Channel, ChatType, CustomMessageTemplate,
-                     Message, CustomMessage, Reaction, Key, User)
+from .models import (Action, Channel, ChatType, CustomMessage,
+                     CustomMessageTemplate, Key, Message, Reaction, User)
 
 
 class ChannelAdmin(admin.ModelAdmin):
