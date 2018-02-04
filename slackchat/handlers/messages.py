@@ -75,7 +75,11 @@ def handle(id, event):
         for user in User.objects.all()
     }
 
-    marker = MarkSlack(user_templates=user_templates)
+    marker = MarkSlack(
+        user_templates=user_templates,
+        link_templates=settings.MARKSLACK_LINK_TEMPLATES,
+        image_template=settings.MARKSLACK_IMAGE_TEMPLATE
+    )
 
     try:
         channel = Channel.objects.get(

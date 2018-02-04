@@ -39,17 +39,27 @@ Settings.WEBHOOK_VERIFICATION_TOKEN = getattr(
 )
 
 
-def default_user_template(user):
-    return '<span class="mention">{} {}</span>'.format(
-        user.first_name,
-        user.last_name
-    )
-
-
 Settings.MARKSLACK_USER_TEMPLATE = getattr(
     project_settings,
     'SLACK_MARKSLACK_USER_TEMPLATE',
-    default_user_template,
+    lambda user: '<span class="mention">{} {}</span>'.format(
+        user.first_name,
+        user.last_name
+    ),
+)
+
+Settings.MARKSLACK_LINK_TEMPLATES = getattr(
+    project_settings,
+    'SLACK_MARKSLACK_LINK_TEMPLATES',
+    {
+        'twitter.com': '<blockquote class="twitter-tweet" data-lang="en"><a href="{}"></a></blockquote>', # noqa
+    },
+)
+
+Settings.MARKSLACK_IMAGE_TEMPLATE = getattr(
+    project_settings,
+    'SLACK_MARKSLACK_IMAGE_TEMPLATE',
+    '<figure><img href="{}" class="myclass"/></figure>',
 )
 
 settings = Settings
