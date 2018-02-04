@@ -1,7 +1,7 @@
 Webhooks
 ========
 
-Slackchat-serializer will fire webhooks whenver :code:`Message`, :code:`Reaction` or :code:`KeywordArgument` objects are saved or deleted.
+Slackchat-serializer will fire webhooks whenever :code:`Message`, :code:`Reaction` or :code:`KeywordArgument` objects are saved or deleted.
 
 Verifying your endpoint
 -----------------------
@@ -40,12 +40,12 @@ For example, you could use Django Rest Framework in a view to respond to the cha
 
 .. note::
 
-  If you need to fire a repeat verification request because your endpoint didn't respond correctly the first time or its URL changed, simply open the :code:`Webhook` instance in Django's admin and re-save it.
+  If you need to fire a repeat verification request because your endpoint didn't respond correctly the first time or because the endpoint URL changed, simply open the :code:`Webhook` instance in Django's admin and re-save it.
 
 Payload
 -------
 
-The webhook will send a payload with the ID of the channel that was updated, allowing your renderer to hit the channel's API and republish the updated data.
+Whenever one the notification models is updated, the webhook will send a payload with the ID of the channel that was updated, allowing your renderer to hit the channel's API and republish the updated data.
 
 .. code-block:: json
 

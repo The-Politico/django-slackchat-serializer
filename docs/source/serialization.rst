@@ -79,7 +79,9 @@ Use meta attributes to fill out social meta tags in your renderer.
 messages
 ^^^^^^^^
 
-See the `markslack <https://github.com/The-Politico/markslack>`_ package for more information on how your users can format links, images, user mentions and text in Slack messages.
+Messages are rendered in Markdown syntax by default, unless :code:`render_to_html = True` on the :code:`ChatType` instance, in which case the message is rendered from Markdown into HTML when serializing.
+
+See the `markslack <https://github.com/The-Politico/markslack>`_ package and :ref:`config-options` for more information on how your users can format links, images, user mentions and text in Slack messages.
 
 reactions
 ^^^^^^^^^

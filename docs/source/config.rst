@@ -1,5 +1,7 @@
-Configuration
-=============
+.. _config-options:
+
+Configuration options
+=====================
 
 
 Required config
