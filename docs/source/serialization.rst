@@ -154,3 +154,60 @@ That pair will parsed and serialized as kwargs on the message:
     ]
 
 One common use case for kwargs is to tag messages for use in custom navigation in the rendered slackchat.
+
+
+Custom content templates
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use a :code:`CustomContentTemplate` to change the way messages' content is serialized or to add a custom arg to a message.
+
+Set a regex :code:`search_string` to match against messages' content and capture groups of any content you want to reformat. Then add a :code:`content_template` Python formatting string that will reformat content.
+
+For example, you might set up a :code:`CustomContentTemplate` instance like this:
+
+.. code-block:: python
+
+  # regex search string
+  template.search_string =  '^ALERT! (.*)'
+
+  # formatting string
+  template.content_template = '<span class="alert-bold">{0}</span>'
+
+Now a message from Slack like this:
+
+::
+
+  ALERT! New slackchat started!
+
+... would be reformated in the serializer like this:
+
+::
+
+  <span class="alert-bold">New slackchat started!</span>
+
+You can also add an :code:`argument_name` to your template instance, which will place the argument in the matched message's :code:`args` when serialized.
+
+For example ...
+
+.. code-block:: python
+
+  template.argument_name = 'new-section'
+
+... would render like this in the serializer of a matched message:
+
+.. code-block:: json
+
+  "messages": [
+        {
+            "timestamp": "2018-02-04T15:00:45.000065Z",
+            "user": "SOMEUSER1",
+            "content": "A matched message",
+            "reactions": [],
+            "args": ["new-section"],
+            "kwargs": {}
+        },
+    ]
+
+It's up to you to make sure your regex search strings aren't too greedy, but we do feel honor-bound to at least remind you:
+
+  *Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems.*
