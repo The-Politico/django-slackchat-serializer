@@ -14,10 +14,12 @@ django-rest-swagger = "*"
 emoji = "*"
 Markdown = "*"
 markslack = "*"
-"psycopg2" = "*"
 pytz = "*"
+"Pillow" = "*"
+"flake8" = "*"
+"slacker" = "*"
+"celery" = "*"
 "slackchat" = {path = "./..", editable = true}
 
-
-[dev-packages]
-"flake8" = "*"
+[requires]
+python_version = "3.6"
