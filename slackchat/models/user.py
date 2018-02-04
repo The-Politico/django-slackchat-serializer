@@ -1,5 +1,5 @@
 from django.db import models
-from slackchat.models import RoleAssignment
+from slackchat.conf import settings
 
 
 class User(models.Model):
@@ -11,16 +11,9 @@ class User(models.Model):
 
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=200, blank=True, null=True)
-    image = models.ImageField()
+    email = models.EmailField(blank=True, null=True)
+    image = models.ImageField(upload_to=settings.USER_IMAGE_UPLOAD_TO)
     title = models.CharField(max_length=255)
-
-    def get_channel_assignments(self, channel):
-        assignments = RoleAssignment.objects.filter(
-            user=self,
-            channel=channel
-        )
-
-        return assignments
 
     def __str__(self):
         return '{0} {1}'.format(self.first_name, self.last_name)

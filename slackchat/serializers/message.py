@@ -1,53 +1,52 @@
 from rest_framework import serializers
 from slackchat.models import Message
-from slackchat.serializers import ReactionSerializer
+
+from .reaction import ReactionSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     reactions = serializers.SerializerMethodField()
-    tags = serializers.SerializerMethodField()
-    keys = serializers.SerializerMethodField()
+    args = serializers.SerializerMethodField()
+    kwargs = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         return obj.user.api_id
 
     def get_content(self, obj):
-        if hasattr(obj, 'custom_message'):
-            return obj.custom_message.content
+        if obj.channel.chat_type.render_to_html:
+            return obj.html()
         else:
-            if obj.channel.chat_type.render_to_html:
-                return obj.html()
-            else:
-                return obj.text
+            return obj.get_content()
 
     def get_reactions(self, obj):
         reactions = []
         for reaction in obj.reactions.all():
-            if not reaction.action:
+            if not reaction.argument:
                 serializer = ReactionSerializer(instance=reaction)
                 reactions.append(serializer.data)
 
         return reactions
 
-    def get_tags(self, obj):
+    def get_args(self, obj):
         args = []
 
         for reaction in obj.reactions.all():
-            if reaction.action:
-                args.append(reaction.action.action_tag)
+            if reaction.argument:
+                args.append(reaction.argument.name)
 
-        if hasattr(obj, 'custom_message'):
-            args.append(obj.custom_message.message_template.custom_action)
+        template, match = obj.find_template_match()
+        if match and template.argument_name:
+            args.append(template.argument_name)
 
         return args
 
-    def get_keys(self, obj):
+    def get_kwargs(self, obj):
         kwargs = {}
 
-        for key in obj.keys.all():
-            kwargs[key.name] = key.value
+        for kwarg in obj.kwargs.all():
+            kwargs[kwarg.key] = kwarg.value
 
         return kwargs
 
@@ -58,6 +57,6 @@ class MessageSerializer(serializers.ModelSerializer):
             'user',
             'content',
             'reactions',
-            'tags',
-            'keys',
+            'args',
+            'kwargs',
         )

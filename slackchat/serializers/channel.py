@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from slackchat.models import Channel
-from slackchat.serializers import MessageSerializer, UserSerializer
+
+from .message import MessageSerializer
+from .user import UserSerializer
 
 
 class ChannelSerializer(serializers.ModelSerializer):

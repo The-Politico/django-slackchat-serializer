@@ -9,8 +9,8 @@ class Reaction(models.Model):
     message = models.ForeignKey(
         'Message', related_name='reactions', on_delete=models.CASCADE)
     reaction = models.CharField(max_length=150)
-    action = models.ForeignKey(
-        'Action', null=True, blank=True, on_delete=models.CASCADE)
+    argument = models.ForeignKey(
+        'Argument', null=True, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(
         'User', on_delete=models.CASCADE)
 

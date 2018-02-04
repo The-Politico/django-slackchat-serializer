@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import (Action, Channel, ChatType, CustomMessage,
-                     CustomMessageTemplate, Key, Message, Reaction, User)
+from .models import (Argument, Channel, ChatType, CustomContentTemplate,
+                     KeywordArgument, Message, Reaction, User)
 
 
 class ChannelAdmin(admin.ModelAdmin):
@@ -9,12 +9,11 @@ class ChannelAdmin(admin.ModelAdmin):
     fields = ('api_id', 'name', 'owner', 'chat_type')
 
 
-admin.site.register(Action)
+admin.site.register(Argument)
 admin.site.register(Channel, ChannelAdmin)
 admin.site.register(User)
-admin.site.register(CustomMessageTemplate)
-admin.site.register(CustomMessage)
+admin.site.register(CustomContentTemplate)
 admin.site.register(Message)
 admin.site.register(Reaction)
-admin.site.register(Key)
+admin.site.register(KeywordArgument)
 admin.site.register(ChatType)

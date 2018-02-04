@@ -1,24 +1,86 @@
-import re
-
 from datetime import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 from markslack import MarkSlack
-
-from slackchat.models import (Channel, CustomMessageTemplate, CustomMessage,
-                              Message, Key, User)
+from slackchat.exceptions import (KeyValueError, KeywordArgumentNotFoundError,
+                                  MessageNotFoundError, UserNotFoundError)
+from slackchat.models import Channel, KeywordArgument, Message, User
 
 marker = MarkSlack()
 
+ignored_subtypes = [
+    'group_join',
+    'file_share',
+    'group_archive',
+]
+
+
+def strptimestamp(timestamp):
+    return datetime.fromtimestamp(float(timestamp))
+
+
+def handle_removed(id, event):
+    try:
+        channel = Channel.objects.get(
+            api_id=event.get('channel')
+        )
+    except ObjectDoesNotExist:
+        return
+    msg = {
+        'user': event.get('previous_message').get('user'),
+        'ts': event.get('previous_message').get('ts'),
+        'text': event.get('message', {}).get('text', None)
+    }
+    user, created = User.objects.get_or_create(
+        api_id=msg.get('user')
+    )
+
+    if event.get('previous_message', {}).get('thread_ts'):
+        thread = event.get('previous_message')
+        key, value = thread.get('text').split(': ', 1)
+
+        try:
+            original_message = Message.objects.get(
+                timestamp=strptimestamp(thread.get('thread_ts'))
+            )
+        except ObjectDoesNotExist:
+            raise MessageNotFoundError(
+                '{}'.format(strptimestamp(thread.get('thread_ts')))
+            )
+        try:
+            user = User.objects.get(api_id=thread.get('user'))
+        except ObjectDoesNotExist:
+            raise UserNotFoundError(thread.get('user'))
+        try:
+            kwarg = KeywordArgument.objects.get(
+                timestamp=strptimestamp(thread.get('ts')),
+                message=original_message,
+                user=user
+            )
+        except ObjectDoesNotExist:
+            raise KeywordArgumentNotFoundError(
+                'KeywordArgument not found.'
+            )
+        kwarg.delete()
+    else:
+        Message.objects.get(
+            channel=channel,
+            timestamp=strptimestamp(msg.get('ts')),
+            user=user,
+        ).delete()
+
 
 def handle(id, event):
-    print(event)
-    if event.get('type', None) != 'message':
-        return False
+    try:
+        channel = Channel.objects.get(
+            api_id=event.get('channel')
+        )
+    except ObjectDoesNotExist:
+        return
 
     subtype = event.get('subtype', None)
-
-    if subtype in ['group_join', 'file_share']:
-        return False
+    if subtype in ignored_subtypes:
+        return
 
     if subtype:
         msg = {
@@ -33,72 +95,45 @@ def handle(id, event):
             'text': event.get('text')
         }
 
-    try:
-        channel = Channel.objects.get(
-            api_id=event.get('channel')
-        )
-    except Exception as e:
-        print('Not registered channel', event.get('channel'), e)
-        return False
-
     user, created = User.objects.get_or_create(
-        api_id=msg['user']
+        api_id=msg.get('user')
     )
 
-    if subtype == 'message_deleted':
-        Message.objects.get(
-            channel=channel,
-            timestamp=datetime.fromtimestamp(float(msg['ts'])),
-            user=user,
-        ).delete()
-    elif event.get('thread_ts'):
+    thread_ts = event.get('thread_ts', None) or \
+        event.get('message', {}).get('thread_ts', None)
+    if thread_ts and (
+        event.get('parent_user_id', None) or
+        event.get('message', {}).get('parent_user_id', None)
+    ):
         try:
-            name = msg['text'].split(': ')[0]
-            value = msg['text'].split(': ')[1]
+            text = msg.get('text')
+            key, value = text.split(': ', 1)
         except Exception as e:
-            print('Could not split reply into key/value pair', msg['text'], e)
-            return False
+            raise KeyValueError('Could not split reply.')
 
         try:
             original_message = Message.objects.get(
-                timestamp=datetime.fromtimestamp(float(event.get('thread_ts')))
+                timestamp=strptimestamp(thread_ts)
             )
-        except Exception as e:
-            print('Unknown message replied to:', event.get('thread_ts'), e)
-            return False
-
-        Key.objects.update_or_create(
-            timestamp=datetime.fromtimestamp(float(msg['ts'])),
+        except ObjectDoesNotExist:
+            raise MessageNotFoundError(
+                '{}'.format(strptimestamp(thread_ts))
+            )
+        KeywordArgument.objects.update_or_create(
+            timestamp=strptimestamp(msg.get('ts')),
             message=original_message,
             user=user,
-            name=name,
-            value=value
+            defaults={
+                "key": key,
+                "value": value
+            }
         )
     else:
         message, created = Message.objects.update_or_create(
             channel=channel,
-            timestamp=datetime.fromtimestamp(float(msg['ts'])),
+            timestamp=strptimestamp(msg.get('ts')),
             user=user,
             defaults={
-                'text': marker.mark(msg['text'])
+                'text': marker.mark(msg.get('text'))
             }
         )
-
-        check_markup(message, user)
-
-
-def check_markup(message, user):
-    for template in CustomMessageTemplate.objects.all():
-        m = re.search(template.search_string, message.text)
-        if m:
-            group_strings = [group for group in m.groups()]
-            content = template.content_template.format(*group_strings)
-
-            CustomMessage.objects.update_or_create(
-                message=message,
-                message_template=template,
-                user=user,
-                defaults={
-                    'content': content
-                }
-            )

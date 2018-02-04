@@ -5,7 +5,8 @@ from rest_framework.views import APIView
 from rest_framework_swagger import renderers
 from slackchat.conf import settings
 
-from .handlers import handle_message, handle_reaction
+from .handlers import (handle_message, handle_message_removed,
+                       handle_reaction_added, handle_reaction_removed)
 
 
 class Events(APIView):
@@ -26,10 +27,16 @@ class Events(APIView):
             event = slack_message.get('event')
 
             if event.get('type') == 'message':
-                handle_message(id, event)
+                if event.get('subtype', None) == 'message_deleted':
+                    handle_message_removed(id, event)
+                else:
+                    handle_message(id, event)
 
             if event.get('type') == 'reaction_added':
-                handle_reaction(id, event)
+                handle_reaction_added(id, event)
+
+            if event.get('type') == 'reaction_removed':
+                handle_reaction_removed(id, event)
 
         return Response(status=status.HTTP_200_OK)
 

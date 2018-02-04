@@ -11,3 +11,6 @@ class Webhook(models.Model):
     """
     endpoint = models.URLField()
     verified = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.endpoint
