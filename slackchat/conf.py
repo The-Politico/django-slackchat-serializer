@@ -17,21 +17,6 @@ Settings.SLACK_API_TOKEN = getattr(
     None
 )
 
-
-def default_upload_to(instance, filename):
-    return 'slackchat/users/{0}{1}/{2}'.format(
-        instance.first_name,
-        instance.last_name,
-        filename,
-    )
-
-
-Settings.USER_IMAGE_UPLOAD_TO = getattr(
-    project_settings,
-    'SLACKCHAT_USER_IMAGE_UPLOAD_TO',
-    default_upload_to
-)
-
 Settings.WEBHOOK_VERIFICATION_TOKEN = getattr(
     project_settings,
     'SLACK_WEBHOOK_VERIFICATION_TOKEN',
@@ -59,7 +44,37 @@ Settings.MARKSLACK_LINK_TEMPLATES = getattr(
 Settings.MARKSLACK_IMAGE_TEMPLATE = getattr(
     project_settings,
     'SLACK_MARKSLACK_IMAGE_TEMPLATE',
-    '<figure><img href="{}" class="myclass"/></figure>',
+    '<figure><img href="{}" /></figure>',
 )
+
+
+def default_user_image_upload_to(instance, filename):
+    return 'slackchat/users/{0}{1}/{2}'.format(
+        instance.first_name,
+        instance.last_name,
+        filename,
+    )
+
+
+Settings.USER_IMAGE_UPLOAD_TO = getattr(
+    project_settings,
+    'SLACKCHAT_USER_IMAGE_UPLOAD_TO',
+    default_user_image_upload_to
+)
+
+
+def default_channel_image_upload_to(instance, filename):
+    return 'slackchat/channels/{0}/{1}'.format(
+        instance.api_id,
+        filename
+    )
+
+
+Settings.CHANNEL_IMAGE_UPLOAD_TO = getattr(
+    project_settings,
+    'SLACKCHAT_CHANNEL_IMAGE_UPLOAD_TO',
+    default_channel_image_upload_to
+)
+
 
 settings = Settings

@@ -5,8 +5,18 @@ from .models import (Argument, Channel, ChatType, CustomContentTemplate,
 
 
 class ChannelAdmin(admin.ModelAdmin):
-    readonly_fields = ('api_id', 'name',)
-    fields = ('api_id', 'name', 'owner', 'chat_type')
+    readonly_fields = ('api_id',)
+    fieldsets = (
+        (None, {
+            'fields': ('api_id', 'chat_type', 'owner')
+        }),
+        ('Page display', {
+            'fields': ('image', 'title', 'introduction')
+        }),
+        ('Metadata', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords')
+        })
+    )
 
 
 admin.site.register(Argument)

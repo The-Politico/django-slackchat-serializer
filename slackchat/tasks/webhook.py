@@ -8,11 +8,11 @@ from slackchat.models import Webhook
 
 
 @shared_task(acks_late=True)
-def post_webhook(id):
+def post_webhook(channel_id):
     data = {
         "token": settings.WEBHOOK_VERIFICATION_TOKEN,
         "type": "update_notification",
-        "channel": id,
+        "channel": channel_id,
     }
     for webhook in Webhook.objects.all():
         if webhook.verified:
@@ -30,7 +30,6 @@ def verify_webhook(pk):
             "challenge": challenge,
         })
         if response.status_code == requests.codes.ok:
-            data = response.json()
-            if data.get("challenge", None) == challenge:
+            if response.text == challenge:
                 webhook.verified = True
                 webhook.save()

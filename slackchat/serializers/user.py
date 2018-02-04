@@ -6,7 +6,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'api_id',
             'first_name',
             'last_name',
             'image',

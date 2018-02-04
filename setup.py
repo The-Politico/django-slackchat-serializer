@@ -10,7 +10,7 @@ setup(
     packages=find_packages(exclude=('example',)),
     include_package_data=True,
     license='',
-    description='Django app to serialize conversations in Slack.',
+    description='A Django app that serializes conversations in Slack and can notify a custom renderer.',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',

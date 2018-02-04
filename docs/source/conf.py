@@ -31,8 +31,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'django-politico-slackchat'
-copyright = '2017, POLITICO'
+project = 'django-slackchat-serializer'
+copyright = '2018, POLITICO'
 author = 'POLITICO'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -99,7 +99,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'django-politico-slackchatdoc'
+htmlhelp_basename = 'django-slackchat-serializerdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -127,8 +127,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [(
     master_doc,
-    'django-politico-slackchat.tex',
-    'django-politico-slackchat Documentation',
+    'django-slackchat-serializer.tex',
+    'django-slackchat-serializer Documentation',
     'POLITICO',
     'manual',
 )]
@@ -140,8 +140,8 @@ latex_documents = [(
 # (source start file, name, description, authors, manual section).
 man_pages = [(
     master_doc,
-    'django-politico-slackchat',
-    'django-politico-slackchat Documentation',
+    'django-slackchat-serializer',
+    'django-slackchat-serializer Documentation',
     [author],
     1
 )]
@@ -154,10 +154,10 @@ man_pages = [(
 #  dir menu entry, description, category)
 texinfo_documents = [(
     master_doc,
-    'django-politico-slackchat',
-    'django-politico-slackchat Documentation',
+    'django-slackchat-serializer',
+    'django-slackchat-serializer Documentation',
     author,
-    'django-politico-slackchat',
+    'django-slackchat-serializer',
     'One line description of project.',
     'Miscellaneous'
 )]

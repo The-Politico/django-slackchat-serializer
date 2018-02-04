@@ -20,9 +20,9 @@ def save_channel(sender, instance, created, **kwargs):
 @receiver(post_delete, sender=KeywordArgument)
 def notify_webhook(sender, instance, **kwargs):
     if sender == Message:
-        channel_id = instance.channel.id
+        channel_id = instance.channel.id.hex
     else:
-        channel_id = instance.message.channel.id
+        channel_id = instance.message.channel.id.hex
     post_webhook.delay(channel_id)
 
 

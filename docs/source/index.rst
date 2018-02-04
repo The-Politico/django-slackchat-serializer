@@ -1,7 +1,10 @@
 .. image:: https://rawgithub.com/The-Politico/src/master/images/logo/badge.png
 
-Welcome to django-politico-slackchat's documentation!
+Welcome to django-slackchat-serializer's documentation!
 ==============================================
+
+
+Serialize conversations in Slack and notify your own custom renderer.
 
 .. toctree::
    :caption: Contents:
@@ -10,7 +13,9 @@ Welcome to django-politico-slackchat's documentation!
    Why this? <why>
    Quickstart <quickstart>
    Configuration options <config>
-
+   Serialization <serialization>
+   Webhooks <webhooks>
+   Integrating with a renderer <renderer>
 
 
 

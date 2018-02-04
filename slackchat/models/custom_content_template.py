@@ -12,7 +12,7 @@ class CustomContentTemplate(models.Model):
         max_length=255,
         blank=True, null=True,
         help_text="Add an argument to the message if search_string \
-        is triggered.")
+        matches against a message's content.")
     search_string = models.CharField(
         max_length=255,
         help_text="A regex search string with capture groups.")
@@ -20,7 +20,7 @@ class CustomContentTemplate(models.Model):
         'ChatType', on_delete=models.CASCADE)
     content_template = models.TextField(
         help_text="A Python format string whose args are the capture groups \
-        from search_string."
+        matched by the search_string."
     )
 
     def __str__(self):
