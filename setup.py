@@ -5,12 +5,12 @@ from setuptools import find_packages, setup
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-politico-slackchat',
+    name='django-slackchat-serializer',
     version='0.0.1',
     packages=find_packages(exclude=('example',)),
     include_package_data=True,
     license='',
-    description='Django app to integrate with Slack messages in a channel.',
+    description='Django app to serialize conversations in Slack.',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',

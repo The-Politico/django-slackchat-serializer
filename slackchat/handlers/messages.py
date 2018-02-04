@@ -2,11 +2,10 @@ from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from markslack import MarkSlack
+from slackchat.conf import settings
 from slackchat.exceptions import (KeyValueError, KeywordArgumentNotFoundError,
                                   MessageNotFoundError, UserNotFoundError)
 from slackchat.models import Channel, KeywordArgument, Message, User
-
-marker = MarkSlack()
 
 ignored_subtypes = [
     'group_join',
@@ -71,6 +70,13 @@ def handle_removed(id, event):
 
 
 def handle(id, event):
+    user_templates = {
+        user.api_id: settings.MARKSLACK_USER_TEMPLATE(user)
+        for user in User.objects.all()
+    }
+
+    marker = MarkSlack(user_templates=user_templates)
+
     try:
         channel = Channel.objects.get(
             api_id=event.get('channel')
