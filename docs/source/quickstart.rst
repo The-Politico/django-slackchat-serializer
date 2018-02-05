@@ -111,7 +111,7 @@ First slackchat
 
 3. Create a new :code:`Channel` instance, which will create a new private channel in Slack to host your slackchat.
 
-4. Invite any other members you want tot he group and start chatting!
+4. Invite any other members you want to the group and start chatting!
 
 Configuring locally
 -------------------
@@ -125,3 +125,15 @@ If you're running your development server on port 8000, for example, you can sta
   $ ngrok http 8000
 
 Now grab the tunnel's :code:`https` URL and use it to configure the request URL in your Slack app's event subscriptions.
+
+Developing
+----------
+
+Move into the example directory and start a pipenv shell.
+
+::
+
+  $ pipenv shell
+
+
+You can now develop using Django's development server.
