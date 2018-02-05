@@ -25,7 +25,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
-        'django',
         'djangorestframework',
         'markdown',
         'markslack',
