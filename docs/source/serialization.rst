@@ -26,6 +26,7 @@ Here's an example of a serialized channel:
         "description": "Live blogging.",
         "keywords": "News, Slackchat"
     },
+    "publish_path": "/path/to/publish/",
     "users": {
         "U4XV32XKR": {
             "first_name": "Jon",

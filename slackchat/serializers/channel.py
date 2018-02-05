@@ -51,6 +51,7 @@ class ChannelSerializer(serializers.ModelSerializer):
             'image',
             'introduction',
             'meta',
+            'publish_path',
             'users',
             'messages',
         )

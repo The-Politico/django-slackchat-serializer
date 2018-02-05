@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.utils.encoding import escape_uri_path
 from django.utils.safestring import mark_safe
 from markdown import markdown
 from slackchat.conf import settings
@@ -51,6 +52,16 @@ class Channel(models.Model):
     meta_keywords = models.CharField(
         max_length=300, blank=True, null=True,
         help_text="Keywords for page meta data.")
+
+    publish_path = models.CharField(
+        max_length=300, blank=True, null=True,
+        help_text="A relative path that a renderer may use when \
+        publishing the slackchat."
+    )
+
+    def save(self, *args, **kwargs):
+        self.publish_path = escape_uri_path(self.publish_path)
+        super().save(*args, **kwargs)
 
     def get_introduction(self):
         if self.chat_type.render_to_html:
