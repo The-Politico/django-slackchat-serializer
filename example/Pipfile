@@ -1,0 +1,25 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+Django = "*"
+dj-database-url = "*"
+djangorestframework = "*"
+django-rest-swagger = "*"
+emoji = "*"
+Markdown = "*"
+markslack = "*"
+pytz = "*"
+"Pillow" = "*"
+"flake8" = "*"
+"slacker" = "*"
+"celery" = "*"
+"slackchat" = {path = "./..", editable = true}
+
+[requires]
+python_version = "3.6"

@@ -1,50 +1,37 @@
-import requests
-import uuid
-
-from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from slackclient import SlackClient
 
-from .models import Channel, Message, Reaction, Key, CustomMessage, Webhook
-
-TOKEN = getattr(settings, 'SLACKCHAT_SLACK_API_TOKEN', None)
+from .celery import (create_private_channel, post_webhook, update_user,
+                     verify_webhook)
+from .models import Channel, KeywordArgument, Message, Reaction, User, Webhook
 
 
 @receiver(post_save, sender=Channel)
-def create_private_channel(sender, instance, created, **kwargs):
+def save_channel(sender, instance, created, **kwargs):
     if created:
-        instance.name = uuid.uuid4().hex[:10]
-        client = SlackClient(TOKEN)
-        response = client.api_call(
-            "conversations.create",
-            name='slackchat-{}'.format(instance.name),
-            is_private=True
-        )
-        if response.get('ok', False):
-            channel = response.get('channel')
-            instance.api_id = channel.get('id')
-            client.api_call(
-                "groups.invite",
-                channel=instance.api_id,
-                user=instance.owner
-            )
-        instance.save()
+        create_private_channel.delay(instance.pk)
 
 
 @receiver(post_save, sender=Message)
 @receiver(post_save, sender=Reaction)
-@receiver(post_save, sender=Key)
-@receiver(post_save, sender=CustomMessage)
+@receiver(post_save, sender=KeywordArgument)
+@receiver(post_delete, sender=Message)
+@receiver(post_delete, sender=Reaction)
+@receiver(post_delete, sender=KeywordArgument)
 def notify_webhook(sender, instance, **kwargs):
     if sender == Message:
-        instance_id = instance.channel.id
+        channel_id = instance.channel.id.hex
     else:
-        instance_id = instance.message.channel.id
+        channel_id = instance.message.channel.id.hex
+    post_webhook.delay(channel_id)
 
-    data = {
-        'id': instance_id
-    }
-    for webhook in Webhook.objects.all():
-        if webhook.verified:
-            requests.post(webhook.endpoint, data=data)
+
+@receiver(post_save, sender=Webhook)
+def save_webhook(sender, instance, **kwargs):
+    verify_webhook.delay(instance.pk)
+
+
+@receiver(post_save, sender=User)
+def new_user(sender, instance, created, **kwargs):
+    if created:
+        update_user.delay(instance.pk)

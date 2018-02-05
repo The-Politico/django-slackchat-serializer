@@ -1,0 +1,80 @@
+from django.conf import settings as project_settings
+
+
+class Settings:
+    pass
+
+
+Settings.SLACK_VERIFICATION_TOKEN = getattr(
+    project_settings,
+    'SLACKCHAT_SLACK_VERIFICATION_TOKEN',
+    None
+)
+
+Settings.SLACK_API_TOKEN = getattr(
+    project_settings,
+    'SLACKCHAT_SLACK_API_TOKEN',
+    None
+)
+
+Settings.WEBHOOK_VERIFICATION_TOKEN = getattr(
+    project_settings,
+    'SLACK_WEBHOOK_VERIFICATION_TOKEN',
+    'slackchat',
+)
+
+
+Settings.MARKSLACK_USER_TEMPLATE = getattr(
+    project_settings,
+    'SLACK_MARKSLACK_USER_TEMPLATE',
+    lambda user: '<span class="mention">{} {}</span>'.format(
+        user.first_name,
+        user.last_name
+    ),
+)
+
+Settings.MARKSLACK_LINK_TEMPLATES = getattr(
+    project_settings,
+    'SLACK_MARKSLACK_LINK_TEMPLATES',
+    {
+        'twitter.com': '<blockquote class="twitter-tweet" data-lang="en"><a href="{}"></a></blockquote>', # noqa
+    },
+)
+
+Settings.MARKSLACK_IMAGE_TEMPLATE = getattr(
+    project_settings,
+    'SLACK_MARKSLACK_IMAGE_TEMPLATE',
+    '<figure><img href="{}" /></figure>',
+)
+
+
+def default_user_image_upload_to(instance, filename):
+    return 'slackchat/users/{0}{1}/{2}'.format(
+        instance.first_name,
+        instance.last_name,
+        filename,
+    )
+
+
+Settings.USER_IMAGE_UPLOAD_TO = getattr(
+    project_settings,
+    'SLACKCHAT_USER_IMAGE_UPLOAD_TO',
+    default_user_image_upload_to
+)
+
+
+def default_channel_image_upload_to(instance, filename):
+    return 'slackchat/channels/{0}/{1}'.format(
+        instance.api_id,
+        filename
+    )
+
+
+Settings.CHANNEL_IMAGE_UPLOAD_TO = getattr(
+    project_settings,
+    'SLACKCHAT_CHANNEL_IMAGE_UPLOAD_TO',
+    default_channel_image_upload_to
+)
+
+
+settings = Settings

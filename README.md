@@ -1,5 +1,5 @@
 ![POLITICO](https://rawgithub.com/The-Politico/src/master/images/logo/badge.png)
 
-# django-politico-slackchat
+# django-slackchat-serializer
 
 TK.
