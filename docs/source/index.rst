@@ -13,6 +13,7 @@ Serialize conversations in Slack and notify your own custom renderer.
    Why this? <why>
    Quickstart <quickstart>
    Configuration options <config>
+   Models <models>
    Serialization <serialization>
    Webhooks <webhooks>
    Integrating with a renderer <renderer>
