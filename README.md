@@ -2,4 +2,4 @@
 
 # django-slackchat-serializer
 
-TK.
+[Docs.](http://django-slackchat-serializer.readthedocs.io/en/latest/index.html)
