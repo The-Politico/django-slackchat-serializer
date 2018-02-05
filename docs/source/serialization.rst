@@ -210,6 +210,11 @@ For example ...
         },
     ]
 
+
 It's up to you to make sure your regex search strings aren't too greedy, but we do feel honor-bound to at least remind you:
 
   *Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems.*
+
+.. note::
+
+  You can turn off kwarg handling for a :code:`ChatType` by setting :code:`kwargs_in_threads = False`.

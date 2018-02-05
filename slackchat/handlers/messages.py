@@ -3,8 +3,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from markslack import MarkSlack
 from slackchat.conf import settings
-from slackchat.exceptions import (KeyValueError, KeywordArgumentNotFoundError,
-                                  MessageNotFoundError, UserNotFoundError)
+from slackchat.exceptions import MessageNotFoundError, UserNotFoundError
 from slackchat.models import Channel, KeywordArgument, Message, User
 
 ignored_subtypes = [
@@ -34,9 +33,12 @@ def handle_removed(id, event):
         api_id=msg.get('user')
     )
 
+    # If thread
     if event.get('previous_message', {}).get('thread_ts'):
+        if not channel.chat_type.kwargs_in_threads:
+            return
+
         thread = event.get('previous_message')
-        key, value = thread.get('text').split(': ', 1)
 
         try:
             original_message = Message.objects.get(
@@ -46,10 +48,12 @@ def handle_removed(id, event):
             raise MessageNotFoundError(
                 '{}'.format(strptimestamp(thread.get('thread_ts')))
             )
+
         try:
             user = User.objects.get(api_id=thread.get('user'))
         except ObjectDoesNotExist:
             raise UserNotFoundError(thread.get('user'))
+
         try:
             kwarg = KeywordArgument.objects.get(
                 timestamp=strptimestamp(thread.get('ts')),
@@ -57,10 +61,10 @@ def handle_removed(id, event):
                 user=user
             )
         except ObjectDoesNotExist:
-            raise KeywordArgumentNotFoundError(
-                'KeywordArgument not found.'
-            )
+            return
+
         kwarg.delete()
+
     else:
         Message.objects.get(
             channel=channel,
@@ -111,15 +115,19 @@ def handle(id, event):
 
     thread_ts = event.get('thread_ts', None) or \
         event.get('message', {}).get('thread_ts', None)
+    # If thread
     if thread_ts and (
         event.get('parent_user_id', None) or
         event.get('message', {}).get('parent_user_id', None)
     ):
+        if not channel.chat_type.kwargs_in_threads:
+            return
+
         try:
-            text = msg.get('text')
-            key, value = text.split(': ', 1)
-        except Exception as e:
-            raise KeyValueError('Could not split reply.')
+            key, value = msg.get('text').split(': ', 1)
+        except ValueError:
+            # Don't handle threads that don't follow key-value pattern
+            return
 
         try:
             original_message = Message.objects.get(
