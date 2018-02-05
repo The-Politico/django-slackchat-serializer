@@ -5,6 +5,8 @@ Quickstart
 Django configuration
 --------------------
 
+Requires Django >= 2.0.
+
 1. Install django-slackchat-serializer using pip.
 
   ::
