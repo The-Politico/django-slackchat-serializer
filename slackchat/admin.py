@@ -10,10 +10,13 @@ class ChannelAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('api_id', 'chat_type', 'owner')
         }),
-        ('Page display', {
+        ('Publishing', {
+            'fields': ('publish_path',)
+        })
+        ('Display', {
             'fields': ('image', 'title', 'introduction')
         }),
-        ('Metadata', {
+        ('Meta', {
             'fields': ('meta_title', 'meta_description', 'meta_keywords')
         })
     )

@@ -60,7 +60,8 @@ class Channel(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.publish_path = escape_uri_path(self.publish_path)
+        if self.publish_path:
+            self.publish_path = escape_uri_path(self.publish_path)
         super().save(*args, **kwargs)
 
     def get_introduction(self):
