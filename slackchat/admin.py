@@ -12,7 +12,7 @@ class ChannelAdmin(admin.ModelAdmin):
         }),
         ('Publishing', {
             'fields': ('publish_path',)
-        })
+        }),
         ('Display', {
             'fields': ('image', 'title', 'introduction')
         }),
