@@ -6,11 +6,11 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-slackchat-serializer',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(exclude=('example',)),
     include_package_data=True,
     license='MIT',
-    description='A Django app that serializes conversations in Slack and can notify a custom renderer.',
+    description='A Django app that serializes conversations in Slack.',
     python_requires='>=3',
     classifiers=[
         'Environment :: Web Environment',
@@ -26,13 +26,14 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
+        'celery',
+        'django-rest-swagger',
         'djangorestframework',
+        'emoji',
         'markdown',
         'markslack',
+        'Pillow',
         'slackclient',
-        'django-rest-swagger',
-        'emoji',
         'slacker',
-        'celery',
     ]
 )
