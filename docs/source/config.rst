@@ -31,6 +31,16 @@ A custom token that will be sent in webhook notification post data as :code:`tok
   # default
   SLACK_WEBHOOK_VERIFICATION_TOKEN = 'slackchat'
 
+:code:`SLACKCHAT_PUBLISH_ROOT`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Configuring this to the URL root where your slackchats are published by a renderer will add a direct link to each chat in the :code:`Channel` Django admin.
+
+.. code-block:: python
+
+  # e.g.
+  SLACKCHAT_PUBLISH_ROOT = 'https://mysite.com/slackchats/'
+
 :code:`SLACK_MARKSLACK_USER_TEMPLATE`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

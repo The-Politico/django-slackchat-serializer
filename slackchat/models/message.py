@@ -40,4 +40,4 @@ class Message(models.Model):
         return (None, None)
 
     def __str__(self):
-        return self.text[:25]
+        return self.text[:50]

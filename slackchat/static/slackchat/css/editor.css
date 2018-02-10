@@ -1,0 +1,31 @@
+.editor-toolbar{
+  clear:left;
+  max-width: 700px;
+}
+.editor-toolbar:before{
+  margin-bottom: 1px;
+}
+.editor-toolbar:after{
+  margin-top: 1px;
+}
+
+.CodeMirror, .editor-preview p{
+  font-size: 16px;
+}
+.editor-preview{
+  background-color: #e4e4e4;
+}
+
+.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){
+  background-color: rgba(255,255,0,0.2);
+}
+
+.CodeMirror, .CodeMirror-scroll{
+  min-height: 140px;
+  max-width: 700px;
+}
+
+div.field-introduction div.help{
+  margin-left: 0;
+  padding-left: 0;
+}

@@ -1,15 +1,18 @@
 from rest_framework import serializers
 from slackchat.models import Message
 
+from .attachment import AttachmentSerializer
+from .mixins import NoNonNullMixin
 from .reaction import ReactionSerializer
 
 
-class MessageSerializer(serializers.ModelSerializer):
+class MessageSerializer(NoNonNullMixin, serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     reactions = serializers.SerializerMethodField()
     args = serializers.SerializerMethodField()
     kwargs = serializers.SerializerMethodField()
+    attachments = AttachmentSerializer(many=True, read_only=True)
 
     def get_user(self, obj):
         return obj.user.api_id
@@ -57,6 +60,7 @@ class MessageSerializer(serializers.ModelSerializer):
             'user',
             'content',
             'reactions',
+            'attachments',
             'args',
             'kwargs',
         )

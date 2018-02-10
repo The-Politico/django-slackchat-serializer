@@ -27,16 +27,21 @@ A message posted by a user in a Slack channel.
 
 An emoji reaction to a message in Slack.
 
+:code:`Attachment`
+------------------
+
+An unfurled link or media item attached to a message.
+
 
 :code:`Argument`
 ----------------
 
-An argument that can be attached to a message through an emoji reaction in Slack. Arguments can signal some sort of special handling for the message in a renderer.
+An argument that can be attached to a message through an emoji reaction in Slack. Arguments can signal to a render that a message should be handled in a special way.
 
 :code:`KeywordArgument`
 -----------------------
 
-A keyword argument that can be attached to a message through a threaded message. Keyword arguments can signal some sort of special handling for the message in a renderer.
+A keyword argument that can be attached to a message through a threaded message. Keyword arguments can signal to a render that a message should be handled in a special way.
 
 :code:`CustomContentTemplate`
 -----------------------------

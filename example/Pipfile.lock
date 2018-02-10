@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "04ea0390817d02ce2b9343f168e517d2730215e9b9bc891c6b344e960a8d2817"
+            "sha256": "73dfb667ea98952cf52e52227f756de5d9a0578164c5131799a80a147412c76f"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -156,10 +156,10 @@
         },
         "markslack": {
             "hashes": [
-                "sha256:9f232b80712d6ed843d9bbf63427fbee96f704f04be054e3fb4e4ca5162ad27c",
-                "sha256:d1b9f3564c3309a0258ae12f83efc962f3c0e8e6f4674f469a640b0b3aa9aba8"
+                "sha256:e6d751ef3e358a3f98455326a516f47e3e96955459f34e7309b1eefd4442a7fa",
+                "sha256:eeccc7f90fe44725449d7013183eb372c747b71eee0ae5c0ce6b8f0f5d0f9d64"
             ],
-            "version": "==0.0.0a3"
+            "version": "==0.0.3"
         },
         "markupsafe": {
             "hashes": [

@@ -22,7 +22,6 @@ Requires Django >= 2.0.
     INSTALLED_APPS = [
         # ...
         'rest_framework',
-        'rest_framework_swagger',
         'slackchat',
     ]
 

@@ -1,10 +1,15 @@
+import re
 import uuid
+from datetime import datetime
+from urllib.parse import urljoin
 
 from django.db import models
+from django.utils import timezone
 from django.utils.encoding import escape_uri_path
 from django.utils.safestring import mark_safe
 from markdown import markdown
 from slackchat.conf import settings
+from slackchat.fields import MarkdownField
 from slackclient import SlackClient
 
 
@@ -39,7 +44,7 @@ class Channel(models.Model):
         upload_to=settings.CHANNEL_IMAGE_UPLOAD_TO, blank=True, null=True,
         help_text="An image to feature on the rendered Slackchat page.")
 
-    introduction = models.TextField(
+    introduction = MarkdownField(
         blank=True, null=True,
         help_text="Some introductory paragraph text in markdown syntax.")
 
@@ -54,14 +59,43 @@ class Channel(models.Model):
         help_text="Keywords for page meta data.")
 
     publish_path = models.CharField(
-        max_length=300, blank=True, null=True,
+        max_length=300, blank=True, unique=True,
         help_text="A relative path that a renderer may use when \
-        publishing the slackchat."
+        publishing the slackchat, e.g., \
+        <span style='color:grey; font-weight:bold;'>/2018-02-12/econ-chat/\
+        </span>."
     )
+
+    publish_time = models.DateTimeField(
+        default=timezone.now, help_text="May be used by renderer to \
+        create dateline.")
+
+    live = models.BooleanField(
+        default=False, help_text="May be used by renderer to determine\
+        if it should repoll for messages while chat is live.")
+
+    @property
+    def published_link(self):
+        if settings.PUBLISH_ROOT:
+            relative_path = re.sub('^/', '', self.publish_path)
+            link = urljoin(settings.PUBLISH_ROOT, relative_path)
+            return mark_safe(
+                '<a href="{0}" target="_blank">{0}</a>'.format(link))
+        else:
+            return self.publish_path
+
+    @property
+    def slack_channel(self):
+        return 'slackchat-{}'.format(self.id.hex[:10])
 
     def save(self, *args, **kwargs):
         if self.publish_path:
             self.publish_path = escape_uri_path(self.publish_path)
+        else:
+            self.publish_path = '/{}/{}/'.format(
+                datetime.today().strftime('%Y-%m-%d'),
+                self.id.hex[:8]
+            )
         super().save(*args, **kwargs)
 
     def get_introduction(self):
@@ -70,4 +104,4 @@ class Channel(models.Model):
         return self.introduction
 
     def __str__(self):
-        return 'slackchat-{}'.format(self.id.hex[:10])
+        return self.slack_channel

@@ -1,3 +1,4 @@
+import re
 import uuid
 
 import requests
@@ -19,6 +20,13 @@ def post_webhook(channel_id):
             requests.post(webhook.endpoint, data=data)
 
 
+def clean_response(response):
+    """ Cleans string quoting in response. """
+    response = re.sub('^[\'"]', '', response)
+    response = re.sub('[\'"]$', '', response)
+    return response
+
+
 @shared_task(acks_late=True)
 def verify_webhook(pk):
     webhook = Webhook.objects.get(pk=pk)
@@ -30,6 +38,6 @@ def verify_webhook(pk):
             "challenge": challenge,
         })
         if response.status_code == requests.codes.ok:
-            if response.text == challenge:
+            if clean_response(response.text) == challenge:
                 webhook.verified = True
                 webhook.save()

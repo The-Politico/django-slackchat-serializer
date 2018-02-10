@@ -6,6 +6,8 @@ from slackchat.conf import settings
 from slackchat.exceptions import MessageNotFoundError, UserNotFoundError
 from slackchat.models import Channel, KeywordArgument, Message, User
 
+from .attachments import handle as handle_attachment
+
 ignored_subtypes = [
     'group_join',
     'file_share',
@@ -155,3 +157,9 @@ def handle(id, event):
                 'text': marker.mark(msg.get('text'))
             }
         )
+
+        # Attachments
+        attachments = event.get('message', {}).get('attachments')
+        if attachments:
+            for attachment in attachments:
+                handle_attachment(message.pk, attachment)

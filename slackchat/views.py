@@ -1,8 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.schemas import SchemaGenerator
 from rest_framework.views import APIView
-from rest_framework_swagger import renderers
 from slackchat.conf import settings
 
 from .handlers import (handle_message, handle_message_removed,
@@ -12,6 +10,8 @@ from .handlers import (handle_message, handle_message_removed,
 class Events(APIView):
     def post(self, request, *args, **kwargs):
         slack_message = request.data
+
+        print(slack_message)
 
         if slack_message.get('token') != settings.SLACK_VERIFICATION_TOKEN:
             return Response(status=status.HTTP_403_FORBIDDEN)
@@ -39,16 +39,3 @@ class Events(APIView):
                 handle_reaction_removed(id, event)
 
         return Response(status=status.HTTP_200_OK)
-
-
-class SwaggerSchemaView(APIView):
-    renderer_classes = [
-        renderers.OpenAPIRenderer,
-        renderers.SwaggerUIRenderer
-    ]
-
-    def get(self, request):
-        generator = SchemaGenerator()
-        schema = generator.get_schema(request=request)
-
-        return Response(schema)

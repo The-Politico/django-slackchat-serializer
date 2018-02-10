@@ -7,19 +7,21 @@ name = "pypi"
 
 [packages]
 
-Django = "*"
+django = "*"
 dj-database-url = "*"
 djangorestframework = "*"
 django-rest-swagger = "*"
 emoji = "*"
-Markdown = "*"
+markdown = "*"
 markslack = "*"
 pytz = "*"
-"Pillow" = "*"
+pillow = "*"
 "flake8" = "*"
-"slacker" = "*"
-"celery" = "*"
-"slackchat" = {path = "./..", editable = true}
+slacker = "*"
+celery = "*"
+slackchat = {path = "./..", editable = true}
+
 
 [requires]
+
 python_version = "3.6"

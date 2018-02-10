@@ -23,6 +23,11 @@ Settings.WEBHOOK_VERIFICATION_TOKEN = getattr(
     'slackchat',
 )
 
+Settings.PUBLISH_ROOT = getattr(
+    project_settings,
+    'SLACKCHAT_PUBLISH_ROOT',
+    None,
+)
 
 Settings.MARKSLACK_USER_TEMPLATE = getattr(
     project_settings,
@@ -44,7 +49,7 @@ Settings.MARKSLACK_LINK_TEMPLATES = getattr(
 Settings.MARKSLACK_IMAGE_TEMPLATE = getattr(
     project_settings,
     'SLACK_MARKSLACK_IMAGE_TEMPLATE',
-    '<figure><img href="{}" /></figure>',
+    '[(image)]({})',
 )
 
 

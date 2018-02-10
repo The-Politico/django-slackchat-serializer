@@ -3,7 +3,8 @@ from django.dispatch import receiver
 
 from .celery import (create_private_channel, post_webhook, update_user,
                      verify_webhook)
-from .models import Channel, KeywordArgument, Message, Reaction, User, Webhook
+from .models import (Attachment, Channel, KeywordArgument, Message, Reaction,
+                     User, Webhook)
 
 
 @receiver(post_save, sender=Channel)
@@ -12,9 +13,11 @@ def save_channel(sender, instance, created, **kwargs):
         create_private_channel.delay(instance.pk)
 
 
+@receiver(post_save, sender=Attachment)
 @receiver(post_save, sender=Message)
 @receiver(post_save, sender=Reaction)
 @receiver(post_save, sender=KeywordArgument)
+@receiver(post_delete, sender=Attachment)
 @receiver(post_delete, sender=Message)
 @receiver(post_delete, sender=Reaction)
 @receiver(post_delete, sender=KeywordArgument)

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 from slackchat.models import Channel
 
@@ -10,6 +11,7 @@ class ChannelSerializer(serializers.ModelSerializer):
     users = serializers.SerializerMethodField()
     meta = serializers.SerializerMethodField()
     introduction = serializers.SerializerMethodField()
+    timestamp = serializers.SerializerMethodField()
     messages = MessageSerializer(many=True)
 
     def get_chat_type(self, obj):
@@ -30,6 +32,9 @@ class ChannelSerializer(serializers.ModelSerializer):
                     users[reaction.user.api_id] = serializer.data
 
         return users
+
+    def get_timestamp(self, obj):
+        return timezone.now()
 
     def get_meta(self, obj):
         return {
@@ -52,6 +57,9 @@ class ChannelSerializer(serializers.ModelSerializer):
             'introduction',
             'meta',
             'publish_path',
+            'publish_time',
+            'live',
             'users',
             'messages',
+            'timestamp',
         )

@@ -40,7 +40,13 @@ Here's an example of a serialized channel:
             "timestamp": "2018-02-04T15:00:45.000065Z",
             "user": "U4XV32XKR",
             "content": "Hi, welcome to our **first** *Slackchat*!",
-            "reactions": [],
+            "attachments": [
+              {
+                  "image_url": "https://myserver.com/some-image.jpg",
+                  "image_width": 400,
+                  "image_height": 400
+              }
+            ],
             "args": ["edited"],
             "kwargs": {
               "style": "moderator-styles"
@@ -57,8 +63,6 @@ Here's an example of a serialized channel:
                 "user": "U4XV32XKR"
               },
             ],
-            "args": [],
-            "kwargs": {}
         }
     ]
   }
@@ -91,6 +95,13 @@ Reactions are captured with the emoji code of the reaction, for example, :code:`
 
 We recommend using the `emoji <https://pypi.python.org/pypi/emoji/>`_ package to translate reaction emoji codes to true unicode symbols in your renderer, which is what `markslack <https://github.com/The-Politico/markslack#emoji>`_ uses when converting messages from Slack.
 
+attachments
+^^^^^^^^^^^
+
+Attachments are links or images Slack has "unfurled" in a message. They contain metadata about a link or media item that allows you to render it in a richer way.
+
+See `Slack <https://api.slack.com/docs/message-link-unfurling#classic_unfurling>`_ for more information.
+
 
 args & kwargs
 ^^^^^^^^^^^^^
@@ -120,9 +131,7 @@ You can create an :code:`Argument` object associated with that character -- e.g.
             "timestamp": "2018-02-04T15:00:45.000065Z",
             "user": "SOMEUSER1",
             "content": "My message is ready to publish.",
-            "reactions": [],
-            "args": ["edited"],
-            "kwargs": {}
+            "args": ["edited"]
         },
     ]
 
@@ -139,7 +148,7 @@ Create your threaded message with a key: value pair:
 .. image:: ./images/thread.png
   :width: 375px
 
-That pair will parsed and serialized as kwargs on the message:
+That pair will be parsed and serialized as kwargs on the message:
 
 .. code-block:: json
 
@@ -148,8 +157,6 @@ That pair will parsed and serialized as kwargs on the message:
             "timestamp": "2018-02-04T15:00:45.000065Z",
             "user": "SOMEUSER1",
             "content": "My message.",
-            "reactions": [],
-            "args": [],
             "kwargs": {
               "myKey": "Some custom content!"
             }
@@ -209,13 +216,9 @@ For example ...
             "timestamp": "2018-02-04T15:00:45.000065Z",
             "user": "SOMEUSER1",
             "content": "A matched message",
-            "reactions": [],
-            "args": ["new-section"],
-            "kwargs": {}
+            "args": ["new-section"]
         },
     ]
 
 
-It's up to you to make sure your regex search strings aren't too greedy, but we do feel honor-bound to at least remind you:
-
-  *Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems.*
+It's up to you to make sure your regex search strings aren't too greedy.

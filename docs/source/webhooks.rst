@@ -1,7 +1,7 @@
 Webhooks
 ========
 
-Slackchat-serializer will fire webhooks whenever :code:`Message`, :code:`Reaction` or :code:`KeywordArgument` objects are saved or deleted.
+Slackchat-serializer will fire webhooks whenever :code:`Message`, :code:`Reaction`, :code:`Attachment` or :code:`KeywordArgument` objects are saved or deleted.
 
 Verifying your endpoint
 -----------------------
@@ -45,7 +45,7 @@ For example, you could use Django Rest Framework in a view to respond to the cha
 Payload
 -------
 
-Whenever one the notification models is updated, the webhook will send a payload with the ID of the channel that was updated, allowing your renderer to hit the channel's API and republish the updated data.
+Whenever one of the notification models is updated, the webhook will send a payload with the ID of the channel that was updated, allowing your renderer to hit the channel's API and republish the updated data.
 
 .. code-block:: json
 
