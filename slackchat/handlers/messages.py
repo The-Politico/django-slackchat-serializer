@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from markslack import MarkSlack
+
 from slackchat.conf import settings
 from slackchat.exceptions import MessageNotFoundError, UserNotFoundError
 from slackchat.models import Channel, KeywordArgument, Message, User
