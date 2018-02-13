@@ -4,7 +4,6 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from slackchat.conf import settings
 
 from .handlers import (handle_message, handle_message_removed,

@@ -1,13 +1,25 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .models import Channel
-from .serializers import ChannelSerializer
+from .models import Channel, ChatType
+from .serializers import (ChannelListSerializer, ChannelSerializer,
+                          ChatTypeSerializer)
 
 
-class ChannelViewset(viewsets.ModelViewSet):
+class ChannelViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Channel.objects.all()
     serializer_class = ChannelSerializer
     lookup_field = 'pk'
     authentication_classes = []
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = []
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action') and self.action == 'list':
+            return ChannelListSerializer
+        return ChannelSerializer
+
+
+class ChatTypeViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = ChatType.objects.all()
+    serializer_class = ChatTypeSerializer
+    authentication_classes = []
+    permission_classes = []

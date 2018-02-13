@@ -63,3 +63,13 @@ class ChannelSerializer(serializers.ModelSerializer):
             'messages',
             'timestamp',
         )
+
+
+class ChannelListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Channel
+        fields = (
+            'id',
+            'api_id',
+            'chat_type',
+        )
