@@ -6,10 +6,10 @@ from .models import (Argument, Attachment, Channel, ChatType,
 
 
 class ChannelAdmin(admin.ModelAdmin):
-    readonly_fields = ('api_id',)
+    readonly_fields = ('api_id', 'team_id',)
     fieldsets = (
         (None, {
-            'fields': ('api_id', 'chat_type', 'owner')
+            'fields': ('api_id', 'team_id', 'chat_type', 'owner')
         }),
         ('Publishing', {
             'fields': ('publish_path', 'publish_time', 'live')
@@ -21,7 +21,13 @@ class ChannelAdmin(admin.ModelAdmin):
             'fields': ('meta_title', 'meta_description', 'meta_keywords')
         })
     )
-    list_display = ('slack_channel', 'published_link', 'live',)
+    list_display = (
+        'slackchat',
+        'published_link',
+        'api_link',
+        'slack_link',
+        'live',
+    )
 
 
 class WebhookAdmin(admin.ModelAdmin):

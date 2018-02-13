@@ -1,7 +1,8 @@
 from celery import shared_task
+from slackclient import SlackClient
+
 from slackchat.conf import settings
 from slackchat.models import Channel
-from slackclient import SlackClient
 
 
 @shared_task(acks_late=True)
@@ -16,6 +17,13 @@ def create_private_channel(pk):
     if response.get('ok', False):
         channel = response.get('channel')
         instance.api_id = channel.get('id')
+
+        # Add team info
+        response = client.api_call("team.info")
+        if response.get('ok', False):
+            team = response.get('team')
+            instance.team_id = team.get('id')
+
         client.api_call(
             "groups.invite",
             channel=instance.api_id,

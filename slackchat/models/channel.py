@@ -4,13 +4,15 @@ from datetime import datetime
 from urllib.parse import urljoin
 
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import escape_uri_path
 from django.utils.safestring import mark_safe
 from markdown import markdown
+from slackclient import SlackClient
+
 from slackchat.conf import settings
 from slackchat.fields import MarkdownField
-from slackclient import SlackClient
 
 
 class Channel(models.Model):
@@ -31,7 +33,14 @@ class Channel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     api_id = models.SlugField(
-        max_length=10, null=True, blank=True, editable=False)
+        max_length=10, null=True, blank=True, editable=False,
+        help_text="Slack API channel ID"
+    )
+
+    team_id = models.SlugField(
+        max_length=10, null=True, blank=True, editable=False,
+        help_text="Slack API team ID"
+    )
 
     chat_type = models.ForeignKey(
         'ChatType', on_delete=models.PROTECT)
@@ -85,7 +94,26 @@ class Channel(models.Model):
             return self.publish_path
 
     @property
-    def slack_channel(self):
+    def api_link(self):
+        link = reverse('slackchat-channel-detail', args=[self.id])
+        return mark_safe(
+            '<a href="{0}" target="_blank">{0}</a>'.format(link))
+
+    @property
+    def slack_link(self):
+        if self.team_id:
+            return mark_safe(
+                '<a href="slack://channel?id={0}&team={1}"\
+                 target="_blank">{2}</a>'.format(
+                    self.api_id,
+                    self.team_id,
+                    self.slackchat
+                ))
+        else:
+            return '-'
+
+    @property
+    def slackchat(self):
         return 'slackchat-{}'.format(self.id.hex[:10])
 
     def save(self, *args, **kwargs):
@@ -104,4 +132,4 @@ class Channel(models.Model):
         return self.introduction
 
     def __str__(self):
-        return self.slack_channel
+        return self.slackchat

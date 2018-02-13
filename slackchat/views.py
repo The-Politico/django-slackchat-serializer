@@ -1,6 +1,6 @@
-import json
+# import json
 
-from django.conf import settings as project_settings
+# from django.conf import settings as project_settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,9 +15,9 @@ class Events(APIView):
     def post(self, request, *args, **kwargs):
         slack_message = request.data
 
-        if project_settings.DEBUG:
-            print('DEBUG slackchat log:')
-            print(json.dumps(slack_message, indent=2))
+        # if project_settings.DEBUG:
+        #     print('DEBUG slackchat log:')
+        #     print(json.dumps(slack_message, indent=2))
 
         if slack_message.get('token') != settings.SLACK_VERIFICATION_TOKEN:
             return Response(status=status.HTTP_403_FORBIDDEN)

@@ -5,7 +5,7 @@ from .views import Events
 from .viewsets import ChannelViewset
 
 router = routers.DefaultRouter()
-router.register(r'channels', ChannelViewset)
+router.register(r'channels', ChannelViewset, base_name='slackchat-channel')
 
 urlpatterns = [
     path('api/', include(router.urls)),
