@@ -17,7 +17,7 @@ def post_webhook(channel_id):
     }
     for webhook in Webhook.objects.all():
         if webhook.verified:
-            requests.post(webhook.endpoint, data=data)
+            requests.post(webhook.endpoint, json=data)
 
 
 def clean_response(response):
@@ -32,7 +32,7 @@ def verify_webhook(pk):
     webhook = Webhook.objects.get(pk=pk)
     if not webhook.verified:
         challenge = uuid.uuid4().hex[:10]
-        response = requests.post(webhook.endpoint, data={
+        response = requests.post(webhook.endpoint, json={
             "token": settings.WEBHOOK_VERIFICATION_TOKEN,
             "type": "url_verification",
             "challenge": challenge,
