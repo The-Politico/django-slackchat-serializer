@@ -32,7 +32,6 @@ class ChannelAdmin(admin.ModelAdmin):
 
 class WebhookAdmin(admin.ModelAdmin):
     fields = ('endpoint', 'verified',)
-    readonly_fields = ('verified',)
 
 
 admin.site.register(Argument)
