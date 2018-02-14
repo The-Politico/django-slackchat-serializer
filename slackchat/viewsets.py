@@ -11,6 +11,7 @@ class ChannelViewset(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'pk'
     authentication_classes = []
     permission_classes = []
+    pagination_class = None
 
     def get_serializer_class(self):
         if hasattr(self, 'action') and self.action == 'list':
@@ -23,3 +24,4 @@ class ChatTypeViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = ChatTypeSerializer
     authentication_classes = []
     permission_classes = []
+    pagination_class = None
