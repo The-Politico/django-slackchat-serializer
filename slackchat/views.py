@@ -11,6 +11,10 @@ from .handlers import (handle_message, handle_message_removed,
 
 
 class Events(APIView):
+    # Open API
+    authentication_classes = ()
+    permission_classes = ()
+
     def post(self, request, *args, **kwargs):
         slack_message = request.data
 

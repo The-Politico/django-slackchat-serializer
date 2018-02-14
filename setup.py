@@ -6,7 +6,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-slackchat-serializer',
-    version='0.1.4',
+    version='0.1.5',
     packages=find_packages(exclude=('example', 'docs',)),
     include_package_data=True,
     url='https://github.com/The-Politico/django-slackchat-serializer',
