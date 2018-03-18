@@ -68,18 +68,4 @@ Settings.USER_IMAGE_UPLOAD_TO = getattr(
 )
 
 
-def default_channel_image_upload_to(instance, filename):
-    return 'slackchat/channels/{0}/{1}'.format(
-        instance.api_id,
-        filename
-    )
-
-
-Settings.CHANNEL_IMAGE_UPLOAD_TO = getattr(
-    project_settings,
-    'SLACKCHAT_CHANNEL_IMAGE_UPLOAD_TO',
-    default_channel_image_upload_to
-)
-
-
 settings = Settings

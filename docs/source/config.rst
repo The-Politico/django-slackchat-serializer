@@ -94,19 +94,3 @@ A function used to set the `upload path <https://docs.djangoproject.com/en/2.0/r
       )
 
   SLACKCHAT_USER_IMAGE_UPLOAD_TO = default_user_image_upload_to
-
-:code:`SLACKCHAT_CHANNEL_IMAGE_UPLOAD_TO`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A function used to set the `upload path <https://docs.djangoproject.com/en/2.0/ref/models/fields/#django.db.models.FileField.upload_to>`_ used for any lede image attached to a :code:`Channel`.
-
-.. code-block:: python
-
-  # default
-  def default_channel_image_upload_to(instance, filename):
-      return 'slackchat/channels/{0}/{1}'.format(
-          instance.api_id,
-          filename
-      )
-
-  SLACKCHAT_CHANNEL_IMAGE_UPLOAD_TO = default_channel_image_upload_to
