@@ -19,14 +19,19 @@ Here's an example of a serialized channel:
     "api_id": "GXXXXXXXX",
     "chat_type": "basic",
     "title": "Our first Slackchat!",
-    "image": "slackchat/channels/lede-image-234.jpg",
     "introduction": "Welcome to our first Slackchat. \nFollow along below:",
     "meta": {
         "title": "First Slackchat",
         "description": "Live blogging.",
-        "keywords": "News, Slackchat"
+        "image": "http://mysite.com/share-image.jpg"
     },
-    "publish_path": "/path/to/publish/",
+    "paths": {
+        "channel": "/2018-01-01/some-chat/",
+        "chat_type": "/slackchats/"
+    },
+    "publish_path": "/slackchats/2018-01-01/some-chat/",
+    "publish_time": "2018-01-01T01:30:00Z",
+    "live": true,
     "users": {
         "U4XV32XKR": {
             "first_name": "Jon",
@@ -64,7 +69,8 @@ Here's an example of a serialized channel:
               },
             ],
         }
-    ]
+    ],
+    "timestamp": "2018-01-01T23:46:26.321994Z"
   }
 
 chat_type

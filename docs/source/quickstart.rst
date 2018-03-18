@@ -106,13 +106,19 @@ Slack configuration
 First slackchat
 ---------------
 
-1. Log into the Django admin.
+1. Run a management command to seed your app with Slack users:
 
-2. Create a new :code:`ChatType` instance.
+  ```
+  $ python manage.py get_slackchat_users
+  ```
 
-3. Create a new :code:`Channel` instance, which will create a new private channel in Slack to host your slackchat.
+2. Log into the Django admin.
 
-4. Invite any other members you want to the group and start chatting!
+3. Create a new :code:`ChatType` instance.
+
+4. Create a new :code:`Channel` instance, which will create a new private channel in Slack to host your slackchat.
+
+5. Invite any other members you want to the group and start chatting!
 
 Configuring locally
 -------------------

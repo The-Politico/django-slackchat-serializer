@@ -11,14 +11,14 @@ class ChannelAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('api_id', 'team_id', 'chat_type', 'owner')
         }),
-        ('Publishing', {
+        ('Publishing info', {
             'fields': ('publish_path', 'publish_time', 'live')
         }),
-        ('Display', {
-            'fields': ('image', 'title', 'introduction')
+        ('Page content', {
+            'fields': ('title', 'introduction')
         }),
-        ('Meta', {
-            'fields': ('meta_title', 'meta_description', 'meta_keywords')
+        ('SEO tags', {
+            'fields': ('meta_title', 'meta_description', 'meta_image')
         })
     )
     list_display = (
@@ -28,6 +28,11 @@ class ChannelAdmin(admin.ModelAdmin):
         'slack_link',
         'live',
     )
+    autocomplete_fields = ['owner']
+
+
+class UserAdmin(admin.ModelAdmin):
+    search_fields = ['first_name', 'last_name']
 
 
 class WebhookAdmin(admin.ModelAdmin):
@@ -37,7 +42,7 @@ class WebhookAdmin(admin.ModelAdmin):
 admin.site.register(Argument)
 admin.site.register(Attachment)
 admin.site.register(Channel, ChannelAdmin)
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(CustomContentTemplate)
 admin.site.register(Message)
 admin.site.register(Reaction)
