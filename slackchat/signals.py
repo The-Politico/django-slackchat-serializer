@@ -25,9 +25,11 @@ def save_channel(sender, instance, created, **kwargs):
 def notify_webhook(sender, instance, **kwargs):
     if sender == Message:
         channel_id = instance.channel.id.hex
+        chat_type = instance.channel.chat_type.name
     else:
         channel_id = instance.message.channel.id.hex
-    transaction.on_commit(lambda: post_webhook.delay(channel_id))
+        chat_type = instance.message.channel.chat_type.name
+    transaction.on_commit(lambda: post_webhook.delay(channel_id, chat_type))
 
 
 @receiver(post_save, sender=Webhook)

@@ -53,4 +53,5 @@ Whenever one of the notification models is updated, the webhook will send a payl
     "token": "your-webhook-verification-token",
     "type": "update_notification",
     "channel": "a-channel-uuid-xxxx...",
+    "chat_type": "a-chat-type"
   }
