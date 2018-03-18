@@ -85,6 +85,11 @@ class ChannelSerializer(serializers.ModelSerializer):
 
 
 class ChannelListSerializer(serializers.ModelSerializer):
+    chat_type = serializers.SerializerMethodField()
+
+    def get_chat_type(self, obj):
+        return obj.chat_type.name
+
     class Meta:
         model = Channel
         fields = (

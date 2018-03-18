@@ -6,7 +6,7 @@ class ChatType(models.Model):
     A type of slackchat.
     """
 
-    name = models.CharField(max_length=255)
+    name = models.SlugField(max_length=255)
     publish_path = models.CharField(
         default='/slackchats/',
         max_length=300,

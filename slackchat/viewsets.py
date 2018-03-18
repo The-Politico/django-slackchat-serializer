@@ -18,6 +18,13 @@ class ChannelViewset(viewsets.ReadOnlyModelViewSet):
             return ChannelListSerializer
         return ChannelSerializer
 
+    def get_queryset(self):
+        queryset = Channel.objects.all()
+        chat_type = self.request.query_params.get('chat_type', None)
+        if chat_type:
+            queryset = queryset.filter(chat_type__name=chat_type)
+        return queryset
+
 
 class ChatTypeViewset(viewsets.ReadOnlyModelViewSet):
     queryset = ChatType.objects.all()
