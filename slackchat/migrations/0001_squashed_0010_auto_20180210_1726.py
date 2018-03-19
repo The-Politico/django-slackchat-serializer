@@ -11,8 +11,6 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    replaces = [('slackchat', '0001_initial'), ('slackchat', '0002_auto_20180207_0014'), ('slackchat', '0003_auto_20180207_1326'), ('slackchat', '0004_auto_20180207_1332'), ('slackchat', '0005_attachment'), ('slackchat', '0006_auto_20180210_0422'), ('slackchat', '0007_auto_20180210_0428'), ('slackchat', '0008_auto_20180210_1230'), ('slackchat', '0009_auto_20180210_1403'), ('slackchat', '0010_auto_20180210_1726')]
-
     initial = True
 
     dependencies = [
