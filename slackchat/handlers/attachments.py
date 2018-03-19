@@ -2,6 +2,10 @@ from slackchat.models import Attachment, Message
 
 
 def handle(message_pk, attachment):
+    # TODO: For now, we're not attaching unfurled tweets.
+    # This gets handled by markslack.
+    if attachment.get('service_name') == 'twitter':
+        return
     data = {
         'title': attachment.get('title'),
         'title_link': attachment.get('title_link'),

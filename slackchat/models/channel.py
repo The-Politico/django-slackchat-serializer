@@ -1,4 +1,4 @@
-import re
+import os
 import uuid
 from datetime import datetime
 from urllib.parse import urljoin
@@ -68,12 +68,18 @@ class Channel(models.Model):
     @property
     def published_link(self):
         if settings.PUBLISH_ROOT:
-            relative_path = self.publish_path.lstrip('/')
+            relative_path = os.path.join(
+                self.chat_type.publish_path,
+                self.publish_path.lstrip('/')
+            ).lstrip('/')
             link = urljoin(settings.PUBLISH_ROOT, relative_path)
             return mark_safe(
                 '<a href="{0}" target="_blank">{0}</a>'.format(link))
         else:
-            return self.publish_path
+            return os.path.join(
+                self.chat_type.publish_path,
+                self.publish_path.lstrip('/')
+            )
 
     @property
     def api_link(self):
