@@ -30,12 +30,11 @@ def update_user(pk):
     try:
         first_name, last_name = real_name.split(' ', 1)
     except ValueError:
-        pass
-    try:
-        first_name, last_name = display_name.split(' ', 1)
-    except ValueError:
-        first_name = real_name or display_name or ''
-        last_name = ''
+        try:
+            first_name, last_name = display_name.split(' ', 1)
+        except ValueError:
+            first_name = real_name or display_name or ''
+            last_name = ''
 
     user.first_name = first_name
     user.last_name = last_name
