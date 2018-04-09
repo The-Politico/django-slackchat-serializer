@@ -33,3 +33,4 @@ class ChatTypeViewset(viewsets.ReadOnlyModelViewSet):
     authentication_classes = []
     permission_classes = []
     pagination_class = None
+    throttle_classes = []
