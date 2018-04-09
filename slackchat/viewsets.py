@@ -12,6 +12,7 @@ class ChannelViewset(viewsets.ReadOnlyModelViewSet):
     authentication_classes = []
     permission_classes = []
     pagination_class = None
+    throttle_classes = []
 
     def get_serializer_class(self):
         if hasattr(self, 'action') and self.action == 'list':
