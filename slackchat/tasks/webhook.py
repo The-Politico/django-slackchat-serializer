@@ -21,6 +21,19 @@ def post_webhook(channel_id, chat_type):
             requests.post(webhook.endpoint, json=data)
 
 
+@shared_task(acks_late=True)
+def post_webhook_republish(channel_id, chat_type):
+    data = {
+        "token": settings.WEBHOOK_VERIFICATION_TOKEN,
+        "type": "republish_request",
+        "channel": channel_id,
+        "chat_type": chat_type,
+    }
+    for webhook in Webhook.objects.all():
+        if webhook.verified:
+            requests.post(webhook.endpoint, json=data)
+
+
 def clean_response(response):
     """ Cleans string quoting in response. """
     response = re.sub('^[\'"]', '', response)

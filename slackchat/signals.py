@@ -2,7 +2,7 @@ from django.db import transaction
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from .celery import (create_private_channel, post_webhook, update_user,
+from .celery import (create_private_channel, post_webhook, update_users,
                      verify_webhook)
 from .models import (Attachment, Channel, KeywordArgument, Message, Reaction,
                      User, Webhook)
@@ -40,4 +40,4 @@ def save_webhook(sender, instance, **kwargs):
 @receiver(post_save, sender=User)
 def new_user(sender, instance, created, **kwargs):
     if created:
-        update_user.delay(instance.pk)
+        update_users.delay([instance.pk])
