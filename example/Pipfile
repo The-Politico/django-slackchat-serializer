@@ -21,6 +21,7 @@ slacker = "*"
 celery = "*"
 slackchat = {path = "./..", editable = true}
 tqdm = "*"
+django-foreignform = ">=0.0.5"
 
 
 [requires]

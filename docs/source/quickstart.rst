@@ -5,7 +5,7 @@ Quickstart
 Django configuration
 --------------------
 
-Requires Django >= 2.0.
+Requires Django >= 2.0 and PostgreSQL >= 9.4.
 
 1. Install django-slackchat-serializer using pip.
 
@@ -22,6 +22,7 @@ Requires Django >= 2.0.
     INSTALLED_APPS = [
         # ...
         'rest_framework',
+        'foreignform',
         'slackchat',
     ]
 

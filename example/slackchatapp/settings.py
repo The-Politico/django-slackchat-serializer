@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'foreignform',
     'slackchat',
 ]
 
@@ -78,13 +79,9 @@ WSGI_APPLICATION = 'slackchatapp.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {}
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config()
-else:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+DATABASES['default'] = dj_database_url.parse(
+    'postgresql://postgres@localhost:5432/slackchat'
+)
 
 
 # Password validation

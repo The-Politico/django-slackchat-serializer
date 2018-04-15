@@ -74,6 +74,7 @@ class ChannelSerializer(serializers.ModelSerializer):
             'title',
             'introduction',
             'meta',
+            'extras',
             'paths',
             'publish_path',
             'publish_time',
