@@ -1,7 +1,8 @@
 from django.db import models
+from foreignform.models import ForeignFormBaseModel
 
 
-class ChatType(models.Model):
+class ChatType(ForeignFormBaseModel):
     """
     A type of slackchat.
     """

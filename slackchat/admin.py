@@ -1,4 +1,5 @@
 from django.contrib import admin
+from foreignform.mixins import ForeignFormAdminMixin
 
 from .celery import post_webhook, post_webhook_republish, update_users
 from .models import (Argument, Attachment, Channel, ChatType,
@@ -6,7 +7,39 @@ from .models import (Argument, Attachment, Channel, ChatType,
                      User, Webhook)
 
 
-class ChannelAdmin(admin.ModelAdmin):
+class ChatTypeAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': (
+                'name',
+                'publish_path',
+            ),
+        }),
+        ('Channel options', {
+            'fields': (
+                'render_to_html',
+                'kwargs_in_threads',
+            ),
+        }),
+        ('Extra channel fields', {
+            'fields': (
+                'jsonSchema',
+                'uiSchema',
+            ),
+            'description': (
+                'See the documentation for <a href="'
+                'https://github.com/mozilla-services/react-jsonschema-form"'
+                ' target="_blank"> '
+                'react-jsonschema-form</a> to learn how to configure extra '
+                'fields for channels of this type.'
+            ),
+        }),
+    )
+
+
+class ChannelAdmin(ForeignFormAdminMixin, admin.ModelAdmin):
+    foreignform_foreign_key = 'chat_type'
+    foreignform_field = 'extras'
     readonly_fields = ('api_id', 'team_id',)
     fieldsets = (
         (None, {
@@ -20,7 +53,10 @@ class ChannelAdmin(admin.ModelAdmin):
         }),
         ('SEO tags', {
             'fields': ('meta_title', 'meta_description', 'meta_image')
-        })
+        }),
+        ('Extra channel fields', {
+            'fields': ('extras',),
+        }),
     )
     list_display = (
         'slackchat',
@@ -77,5 +113,5 @@ admin.site.register(CustomContentTemplate)
 admin.site.register(Message)
 admin.site.register(Reaction)
 admin.site.register(KeywordArgument)
-admin.site.register(ChatType)
+admin.site.register(ChatType, ChatTypeAdmin)
 admin.site.register(Webhook, WebhookAdmin)

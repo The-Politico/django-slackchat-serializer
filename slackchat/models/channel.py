@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urljoin
 
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -49,6 +50,9 @@ class Channel(models.Model):
     meta_image = models.URLField(
         blank=True, null=True,
         help_text="Share image URL")
+
+    # Extra metadata, provided by django-foreignform
+    extras = JSONField(blank=True, null=True)
 
     publish_path = models.CharField(
         max_length=300, blank=True, unique=True,

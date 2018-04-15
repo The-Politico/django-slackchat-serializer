@@ -31,6 +31,7 @@ setup(
     install_requires=[
         'celery',
         'djangorestframework',
+        'django-foreignform',
         'emoji',
         'markdown',
         'markslack',

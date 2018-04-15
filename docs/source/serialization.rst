@@ -25,6 +25,9 @@ Here's an example of a serialized channel:
         "description": "Live blogging.",
         "image": "http://mysite.com/share-image.jpg"
     },
+    "extras": {
+      "video": "https://www.youtube.com/watch?v=V7uEb_XrK1U"
+    },
     "paths": {
         "channel": "/2018-01-01/some-chat/",
         "chat_type": "/slackchats/"
@@ -80,12 +83,22 @@ Slackchats are serialized with a chat_type property, which represents a :code:`C
 
 This is useful to identify a particular template your renderer may use to render different types of slackchats, for example, using different design treatments or branding.
 
-Custom `args & kwargs`_ patterns are also configured per ChatType.
+Custom `args & kwargs`_ patterns are also configured per :code:`ChatType`.
 
 meta
 ^^^^
 
 Use meta attributes to fill out social meta tags in your renderer.
+
+extras
+^^^^^^
+
+You can configure additional fields per ChatType to collect specialized data for a channel. Say you have a ChatType that includes a live video feed. You can configure a field to collect a video embed code for this template, and the value for that field will be serialized here.
+
+.. note::
+
+  Configure additional fields in the :code:`ChatType` admin using a JSON Schema and UI Schema. Users will then see the additional fields in the :code:`Channel` admin. See `django-foreignform <https://github.com/The-Politico/django-foreignform>`_ for more information on using this feature.
+
 
 messages
 ^^^^^^^^
