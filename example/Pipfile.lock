@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bf52eb25989c1c86a6376742bca9080c9cee3bd52e400294d750ed3907f03252"
+            "sha256": "b51da9a685b59a7ef025e9df182ee828c09afad81a7f7d77cebfaee6a111e7ac"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -231,6 +231,13 @@
             ],
             "version": "==5.1.0"
         },
+        "pkginfo": {
+            "hashes": [
+                "sha256:a39076cb3eb34c333a0dd390b568e9e1e881c7bf2cc0aee12120636816f55aee",
+                "sha256:5878d542a4b3f237e359926384f1dde4e099c9f5525d236b1840cf704fa8d474"
+            ],
+            "version": "==1.4.2"
+        },
         "psycopg2": {
             "hashes": [
                 "sha256:aeaba399254ca79c299d9fe6aa811d3c3eac61458dee10270de7f4e71c624998",
@@ -293,6 +300,13 @@
             ],
             "version": "==2.18.4"
         },
+        "requests-toolbelt": {
+            "hashes": [
+                "sha256:42c9c170abc2cacb78b8ab23ac957945c7716249206f90874651971a4acff237",
+                "sha256:f6a531936c6fa4c6cfce1b9c10d5c4f498d16528d2a54a22ca00011205a187b5"
+            ],
+            "version": "==0.8.0"
+        },
         "simplejson": {
             "hashes": [
                 "sha256:194fa08e4047f16e7087f2a406abd15151a482a097e42d8babb1b8181b2232b1",
@@ -348,6 +362,13 @@
                 "sha256:059e7dd579f2c1a2b9103a8ec76fb0bc32cc16904d7d65977edfed6b5745dc48"
             ],
             "version": "==4.22.0"
+        },
+        "twine": {
+            "hashes": [
+                "sha256:08eb132bbaec40c6d25b358f546ec1dc96ebd2638a86eea68769d9e67fe2b129",
+                "sha256:2fd9a4d9ff0bcacf41fdc40c8cb0cfaef1f1859457c9653fd1b92237cc4e9f25"
+            ],
+            "version": "==1.11.0"
         },
         "uritemplate": {
             "hashes": [

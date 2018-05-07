@@ -100,7 +100,10 @@ def handle_added(id, event):
     }
 
     try:
-        argument = Argument.objects.get(character=event.get('reaction'))
+        argument = Argument.objects.get(
+            character=event.get('reaction'),
+            chat_type=channel.chat_type
+        )
         reaction_kwargs['argument'] = argument
     except ObjectDoesNotExist:
         pass

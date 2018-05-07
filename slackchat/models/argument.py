@@ -22,3 +22,6 @@ class Argument(models.Model):
             self.name,
             self.chat_type
         )
+
+    class Meta:
+        unique_together = ('character', 'chat_type')
