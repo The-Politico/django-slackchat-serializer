@@ -15,9 +15,11 @@ class Message(models.Model):
     timestamp = models.DateTimeField(unique=True)
 
     channel = models.ForeignKey(
-        'Channel', related_name='messages', on_delete=models.CASCADE)
+        "Channel", related_name="messages", on_delete=models.CASCADE
+    )
     user = models.ForeignKey(
-        'User', related_name='messages', on_delete=models.CASCADE)
+        "User", related_name="messages", on_delete=models.CASCADE
+    )
     text = models.TextField()
 
     def html(self):
@@ -25,10 +27,37 @@ class Message(models.Model):
 
     def get_content(self):
         template, match = self.find_template_match()
-        if match:
+        if template and template.content_template != "" and match:
             groups = [group for group in match.groups()]
             return template.content_template.format(*groups)
         return self.text
+
+    def get_custom_arg(self):
+        template, match = self.find_template_match()
+        if match:
+            groups = [group for group in match.groups()]
+            return template.argument_template.format(*groups)
+        return None
+
+    def get_custom_kwargs(self):
+        return self.parse_json_template("kwarg_template")
+
+    def get_custom_attachment(self):
+        return self.parse_json_template("attachment_template")
+
+    def parse_json_template(self, template_type):
+        template, match = self.find_template_match()
+        if match:
+            groups = [group for group in match.groups()]
+            output_dict = dict()
+            for key in getattr(template, template_type):
+                template_key = getattr(template, template_type)[key]
+                if isinstance(template_key, str):
+                    output_dict[key] = template_key.format(*groups)
+                else:
+                    output_dict[key] = template_key
+            return output_dict
+        return None
 
     def find_template_match(self):
         for template in CustomContentTemplate.objects.filter(
