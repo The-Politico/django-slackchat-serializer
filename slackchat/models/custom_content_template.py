@@ -9,13 +9,6 @@ class CustomContentTemplate(models.Model):
     """
 
     name = models.CharField(max_length=255)
-    argument_name = models.SlugField(
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="Add an argument to the message if search_string \
-        matches against a message's content.",
-    )
     search_string = models.CharField(
         max_length=255, help_text="A regex search string with capture groups."
     )
@@ -26,11 +19,12 @@ class CustomContentTemplate(models.Model):
         help_text="A Python format string whose args are the capture groups \
         matched by the search_string.",
     )
-    argument_template = models.TextField(
+    argument_template = models.CharField(
         blank=True,
         null=True,
-        help_text="A Python format string whose args are the capture groups \
-        matched by the search_string.",
+        max_length=255,
+        help_text="A comma seprated list of Python format string whose \
+        args are the capture groups matched by the search_string.",
     )
     attachment_template = JSONField(
         blank=True,

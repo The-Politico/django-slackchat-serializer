@@ -32,11 +32,14 @@ class Message(models.Model):
             return template.content_template.format(*groups)
         return self.text
 
-    def get_custom_arg(self):
+    def get_custom_args(self):
         template, match = self.find_template_match()
         if match:
             groups = [group for group in match.groups()]
-            return template.argument_template.format(*groups)
+            return [
+                str(arg).strip().format(*groups)
+                for arg in template.argument_template.split(",")
+            ]
         return None
 
     def get_custom_kwargs(self):

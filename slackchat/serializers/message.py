@@ -40,13 +40,13 @@ class MessageSerializer(NoNonNullMixin, serializers.ModelSerializer):
             if reaction.argument:
                 args.append(reaction.argument.name)
 
-        template, match = obj.find_template_match()
-        if match and template.argument_name:
-            args.append(template.argument_name)
+        # template, match = obj.find_template_match()
+        # if match and template.argument_template:
+        #     args.append(template.argument_name)
 
-        custom_arg = obj.get_custom_arg()
-        if custom_arg:
-            args.append(custom_arg)
+        custom_args = obj.get_custom_args()
+        if custom_args:
+            args = args + custom_args
 
         return args
 
