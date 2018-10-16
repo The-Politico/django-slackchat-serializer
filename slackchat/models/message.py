@@ -49,17 +49,19 @@ class Message(models.Model):
         return self.parse_json_template("attachment_template")
 
     def parse_json_template(self, template_type):
-        template, match = self.find_template_match()
+        template_schema, match = self.find_template_match()
         if match:
             groups = [group for group in match.groups()]
             output_dict = dict()
-            for key in getattr(template, template_type):
-                template_key = getattr(template, template_type)[key]
-                if isinstance(template_key, str):
-                    output_dict[key] = template_key.format(*groups)
-                else:
-                    output_dict[key] = template_key
-            return output_dict
+            template = getattr(template_schema, template_type)
+            if isinstance(template, dict):
+                for key in template:
+                    template_key = getattr(template_schema, template_type)[key]
+                    if isinstance(template_key, str):
+                        output_dict[key] = template_key.format(*groups)
+                    else:
+                        output_dict[key] = template_key
+                return output_dict
         return None
 
     def find_template_match(self):
