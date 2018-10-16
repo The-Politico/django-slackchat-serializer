@@ -12,7 +12,7 @@ class MessageSerializer(NoNonNullMixin, serializers.ModelSerializer):
     reactions = serializers.SerializerMethodField()
     args = serializers.SerializerMethodField()
     kwargs = serializers.SerializerMethodField()
-    attachments = AttachmentSerializer(many=True, read_only=True)
+    attachments = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         return obj.user.api_id
@@ -39,28 +39,46 @@ class MessageSerializer(NoNonNullMixin, serializers.ModelSerializer):
             if reaction.argument:
                 args.append(reaction.argument.name)
 
-        template, match = obj.find_template_match()
-        if match and template.argument_name:
-            args.append(template.argument_name)
+        custom_args = obj.get_custom_args()
+        if custom_args:
+            args = args + custom_args
 
         return args
 
     def get_kwargs(self, obj):
         kwargs = {}
 
+        custom_kwargs = obj.get_custom_kwargs()
+        if custom_kwargs:
+            kwargs = custom_kwargs
+
         for kwarg in obj.kwargs.all():
             kwargs[kwarg.key] = kwarg.value
 
         return kwargs
 
+    def get_attachments(self, obj):
+        attachments = []
+
+        for attachment in obj.attachments.all():
+            if attachment:
+                serializer = AttachmentSerializer(instance=attachment)
+                attachments.append(serializer.data)
+
+        custom_attachment = obj.get_custom_attachment()
+        if custom_attachment:
+            attachments.append(custom_attachment)
+
+        return attachments
+
     class Meta:
         model = Message
         fields = (
-            'timestamp',
-            'user',
-            'content',
-            'reactions',
-            'attachments',
-            'args',
-            'kwargs',
+            "timestamp",
+            "user",
+            "content",
+            "reactions",
+            "attachments",
+            "args",
+            "kwargs",
         )
