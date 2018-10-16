@@ -29,16 +29,16 @@ class CustomContentTemplate(models.Model):
     attachment_template = JSONField(
         blank=True,
         null=True,
-        help_text="A JSON object with Python formatted strings whose args are \
-        the capture groups matched by the search_string and added to the \
-        message's attachments.",
+        help_text="A JSON object added to a message's attachments whose \
+        values may be Python formatted strings. The args given to formatted \
+        strings are the capture groups matched by the search string.",
     )
     kwarg_template = JSONField(
         blank=True,
         null=True,
-        help_text="A JSON object with Python formatted strings whose args are \
-        the capture groups matched by the search_string and added to the \
-        message's kwargs (overridden by manual kwargs in the thread).",
+        help_text="A JSON object added to a message's kwargs whose values may \
+        be Python formatted strings. The args given to formatted strings are \
+        the capture groups matched by the search string.",
     )
 
     def __str__(self):

@@ -13,7 +13,6 @@ class MessageSerializer(NoNonNullMixin, serializers.ModelSerializer):
     args = serializers.SerializerMethodField()
     kwargs = serializers.SerializerMethodField()
     attachments = serializers.SerializerMethodField()
-    # attachments = AttachmentSerializer(many=True, read_only=True)
 
     def get_user(self, obj):
         return obj.user.api_id
@@ -39,10 +38,6 @@ class MessageSerializer(NoNonNullMixin, serializers.ModelSerializer):
         for reaction in obj.reactions.all():
             if reaction.argument:
                 args.append(reaction.argument.name)
-
-        # template, match = obj.find_template_match()
-        # if match and template.argument_template:
-        #     args.append(template.argument_name)
 
         custom_args = obj.get_custom_args()
         if custom_args:
