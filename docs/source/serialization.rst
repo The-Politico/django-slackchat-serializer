@@ -1,4 +1,4 @@
-Serialization
+betweenSerialization
 =============
 
 Channel
@@ -194,7 +194,12 @@ Custom content templates
 
 You can use a :code:`CustomContentTemplate` to change the way messages' content is serialized or to add a custom arg to a message.
 
-Set a regex :code:`search_string` to match against messages' content and capture groups of any content you want to reformat. Then add a :code:`content_template` Python formatting string that will reformat content.
+Set a regex :code:`search_string` to match against messages' content and capture groups of any content you want to reformat. Then use one of the template features to customize your message.
+
+Content
+~~~~~~~
+
+Add a :code:`content_template` Python formatting string that will reformat content. Leaving this field blank will pass the entire message's contents through.
 
 For example, you might set up a :code:`CustomContentTemplate` instance like this:
 
@@ -218,13 +223,25 @@ Now a message from Slack like this:
 
   <span class="alert-bold">New slackchat started!</span>
 
-You can also add an :code:`argument_name` to your template instance, which will place the argument in the matched message's :code:`args` when serialized.
+Args
+~~~~
+
+You can also add an :code:`argument_template` to your template instance, which will place arguments in the matched message's :code:`args` when serialized These arguments should be comma-separated and can be regular text or a Python formatted strings whose args are the capture groups matched by the search string.
 
 For example ...
 
 .. code-block:: python
 
-  template.argument_name = 'new-section'
+  # Message: ALERT red! New slackchat started!
+
+  # regex search string
+  template.search_string =  '^ALERT (.*)! (.*)'
+
+  # formatting string
+  template.content_template = '{1}'
+
+  # argument template
+  template.argument_template = 'alert, alert-{0}'
 
 ... would render like this in the serializer of a matched message:
 
@@ -234,10 +251,95 @@ For example ...
         {
             "timestamp": "2018-02-04T15:00:45.000065Z",
             "user": "SOMEUSER1",
-            "content": "A matched message",
-            "args": ["new-section"]
+            "content": "New slackchat started!",
+            "args": ["alert", "alert-red"]
         },
     ]
 
+Attachment
+~~~~~~~~~~
+
+A custom attachment can be added to your message using a JSON object schema. The values of the object can be Python formatted strings once again passed the args of the capture group.
+
+When creating a custom attachment you might consider consulting `Slack's attachment documentation <https://api.slack.com/docs/message-attachments>`_ to keep some sense of consistency between Slack-generated attachments and your custom one.
+
+For example ...
+
+.. code-block:: python
+
+  # Message: ALERT red! New slackchat started!
+
+  # regex search string
+  template.search_string =  '^ALERT (.*)! (.*)'
+
+  # formatting string
+  template.content_template = '{1}'
+
+  # attachment template
+  template.attachment_template = {
+        "title": "Alert!",
+        "service" "Alerter"
+        "title_link": "http://example.com/alert",
+        "text": "{0}",
+        "color": "#ff0000"
+    }
+
+... would render like this in the serializer of a matched message:
+
+.. code-block:: json
+
+  "messages": [
+        {
+            "timestamp": "2018-02-04T15:00:45.000065Z",
+            "user": "SOMEUSER1",
+            "content": "New slackchat started!",
+            "attachments": [
+                {
+                    "title": "Alert!",
+                    "service" "Alerter"
+                    "title_link": "http://example.com/alert",
+                    "text": "red",
+                    "color": "#ff0000"
+                }
+            ]
+        },
+    ]
+
+Kwargs
+~~~~~~
+
+Custom kwargs are also available using a JSON object schema. The values of the object can be Python formatted strings once again passed the args of the capture group. If there are duplicate-key conflicts between these and kwargs added via message threads, the message threads will take precedence.
+
+For example ...
+
+.. code-block:: python
+
+  # Message: ALERT red! New slackchat started!
+
+  # regex search string
+  template.search_string =  '^ALERT (.*)! (.*)'
+
+  # formatting string
+  template.content_template = '{1}'
+
+  # kwarg template
+  template.kwarg_template = {
+    'alert-type': '{0}'
+  }
+
+... would render like this in the serializer of a matched message:
+
+.. code-block:: json
+
+  "messages": [
+        {
+            "timestamp": "2018-02-04T15:00:45.000065Z",
+            "user": "SOMEUSER1",
+            "content": "New slackchat started!",
+            "kwargs": {
+              "alert-type": "red"
+            }
+        },
+    ]
 
 It's up to you to make sure your regex search strings aren't too greedy.
