@@ -5,17 +5,26 @@ import requests
 
 from celery import shared_task
 from slackchat.conf import settings
-from slackchat.models import Webhook
+from slackchat.models import Webhook, Message
+from slackchat.serializers import MessageSerializer
 
 
 @shared_task(acks_late=True)
-def post_webhook(channel_id, chat_type):
+def post_webhook(channel_id, chat_type, message_ts):
     data = {
         "token": settings.WEBHOOK_VERIFICATION_TOKEN,
         "type": "update_notification",
         "channel": channel_id,
         "chat_type": chat_type,
     }
+
+    if message_ts:
+        try:
+            message = Message.objects.get(timestamp=message_ts)
+            data["message"] = MessageSerializer(message).data
+        except Message.DoesNotExist:
+            pass
+
     for webhook in Webhook.objects.all():
         if webhook.verified:
             requests.post(webhook.endpoint, json=data)
@@ -36,8 +45,8 @@ def post_webhook_republish(channel_id, chat_type):
 
 def clean_response(response):
     """ Cleans string quoting in response. """
-    response = re.sub('^[\'"]', '', response)
-    response = re.sub('[\'"]$', '', response)
+    response = re.sub("^['\"]", "", response)
+    response = re.sub("['\"]$", "", response)
     return response
 
 
@@ -46,11 +55,14 @@ def verify_webhook(pk):
     webhook = Webhook.objects.get(pk=pk)
     if not webhook.verified:
         challenge = uuid.uuid4().hex[:10]
-        response = requests.post(webhook.endpoint, json={
-            "token": settings.WEBHOOK_VERIFICATION_TOKEN,
-            "type": "url_verification",
-            "challenge": challenge,
-        })
+        response = requests.post(
+            webhook.endpoint,
+            json={
+                "token": settings.WEBHOOK_VERIFICATION_TOKEN,
+                "type": "url_verification",
+                "challenge": challenge,
+            },
+        )
         if response.status_code == requests.codes.ok:
             if clean_response(response.text) == challenge:
                 webhook.verified = True
