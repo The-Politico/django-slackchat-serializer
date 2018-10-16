@@ -5,25 +5,19 @@ import requests
 
 from celery import shared_task
 from slackchat.conf import settings
-from slackchat.models import Webhook, Message
-from slackchat.serializers import MessageSerializer
+from slackchat.models import Webhook
 
 
 @shared_task(acks_late=True)
-def post_webhook(channel_id, chat_type, message_ts):
+def post_webhook(channel_id, chat_type, update_type, message):
     data = {
         "token": settings.WEBHOOK_VERIFICATION_TOKEN,
         "type": "update_notification",
         "channel": channel_id,
         "chat_type": chat_type,
+        "update_type": update_type,
+        "message": message,
     }
-
-    if message_ts:
-        try:
-            message = Message.objects.get(timestamp=message_ts)
-            data["message"] = MessageSerializer(message).data
-        except Message.DoesNotExist:
-            pass
 
     for webhook in Webhook.objects.all():
         if webhook.verified:

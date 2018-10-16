@@ -55,3 +55,18 @@ Whenever one of the notification models is updated, the webhook will send a payl
     "channel": "a-channel-uuid-xxxx...",
     "chat_type": "a-chat-type"
   }
+
+If the type of the webhook is :code:`update_notification`, the payload will also include an :code:`update_type` of :code:`message_created`, :code:`message_changed`, or :code:`message deleted`. It will also include a :code:`message` key with data about the message that was added, changed, or deleted.
+
+.. code-block:: json
+
+  {
+    ...
+    "type": "update_notification",
+    "update_type": "message_added",
+    "message": {
+      "timestamp": "2018-10-16T17:23:49.000100Z",
+      "user": "USERID",
+      "content": "A new message."
+    }
+  }
