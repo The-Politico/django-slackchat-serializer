@@ -20,7 +20,7 @@ class ChannelViewset(viewsets.ReadOnlyModelViewSet):
         return ChannelSerializer
 
     def get_queryset(self):
-        queryset = Channel.objects.prefetch_related("messages__reactions")
+        queryset = Channel.objects.all()
         chat_type = self.request.query_params.get("chat_type", None)
         if chat_type:
             queryset = queryset.filter(chat_type__name=chat_type)
