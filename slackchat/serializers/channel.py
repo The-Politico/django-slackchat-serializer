@@ -16,15 +16,15 @@ class ChannelSerializer(serializers.ModelSerializer):
     meta = serializers.SerializerMethodField()
     introduction = serializers.SerializerMethodField()
     timestamp = serializers.SerializerMethodField()
-    messages = MessageSerializer(many=True)
+    messages = serializers.SerializerMethodField()
 
     def get_chat_type(self, obj):
         return obj.chat_type.name
 
     def get_paths(self, obj):
         return {
-            'channel': obj.publish_path,
-            'chat_type': obj.chat_type.publish_path
+            "channel": obj.publish_path,
+            "chat_type": obj.chat_type.publish_path,
         }
 
     def get_publish_path(self, obj):
@@ -32,8 +32,7 @@ class ChannelSerializer(serializers.ModelSerializer):
         publish_path joins the publish_paths for the chat type and the channel.
         """
         return os.path.join(
-            obj.chat_type.publish_path,
-            obj.publish_path.lstrip('/')
+            obj.chat_type.publish_path, obj.publish_path.lstrip("/")
         )
 
     def get_users(self, obj):
@@ -59,29 +58,32 @@ class ChannelSerializer(serializers.ModelSerializer):
         return {
             "title": obj.meta_title,
             "description": obj.meta_description,
-            "image": obj.meta_image
+            "image": obj.meta_image,
         }
 
     def get_introduction(self, obj):
         return obj.get_introduction()
 
+    def get_messages(self, obj):
+        return [m.serialized for m in obj.messages.all()]
+
     class Meta:
         model = Channel
         fields = (
-            'id',
-            'api_id',
-            'chat_type',
-            'title',
-            'introduction',
-            'meta',
-            'extras',
-            'paths',
-            'publish_path',
-            'publish_time',
-            'live',
-            'users',
-            'messages',
-            'timestamp',
+            "id",
+            "api_id",
+            "chat_type",
+            "title",
+            "introduction",
+            "meta",
+            "extras",
+            "paths",
+            "publish_path",
+            "publish_time",
+            "live",
+            "users",
+            "messages",
+            "timestamp",
         )
 
 
@@ -93,8 +95,4 @@ class ChannelListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Channel
-        fields = (
-            'id',
-            'api_id',
-            'chat_type',
-        )
+        fields = ("id", "api_id", "chat_type")
