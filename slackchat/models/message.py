@@ -1,5 +1,6 @@
 import re
 
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.safestring import mark_safe
 from markdown import markdown
@@ -21,6 +22,8 @@ class Message(models.Model):
         "User", related_name="messages", on_delete=models.CASCADE
     )
     text = models.TextField()
+
+    serialized = JSONField(blank=True, null=True)
 
     def html(self):
         return mark_safe(markdown(self.get_content()))
@@ -72,6 +75,15 @@ class Message(models.Model):
             if match:
                 return (template, match)
         return (None, None)
+
+    def serialize(self):
+        self.save()
+
+    def save(self, *args, **kwargs):
+        from slackchat.serializers import MessageSerializer
+
+        self.serialized = MessageSerializer(self).data
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.text[:50]

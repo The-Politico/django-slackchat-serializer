@@ -1,4 +1,4 @@
-__version__ = "0.5.4"
+__version__ = "0.6.1"
 __package__ = "django-slackchat-serializer"
 
 default_app_config = "slackchat.apps.SlackchatConfig"
