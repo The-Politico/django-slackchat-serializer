@@ -18,78 +18,89 @@ class Channel(models.Model):
     """
     A Slack channel that hosts a slackchat.
     """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     api_id = models.SlugField(
-        max_length=10, null=True, blank=True, editable=False,
-        help_text="Slack API channel ID"
+        max_length=10,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text="Slack API channel ID",
     )
 
     team_id = models.SlugField(
-        max_length=10, null=True, blank=True, editable=False,
-        help_text="Slack API team ID"
+        max_length=10,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text="Slack API team ID",
     )
 
-    chat_type = models.ForeignKey(
-        'ChatType', on_delete=models.PROTECT)
+    chat_type = models.ForeignKey("ChatType", on_delete=models.PROTECT)
 
-    owner = models.ForeignKey('slackchat.User', on_delete=models.PROTECT)
+    owner = models.ForeignKey("slackchat.User", on_delete=models.PROTECT)
 
     title = models.CharField(max_length=150, blank=True, null=True)
 
     introduction = MarkdownField(
-        blank=True, null=True,
-        help_text="Some introductory paragraph text (in markdown syntax).")
+        blank=True,
+        null=True,
+        help_text="Some introductory paragraph text (in markdown syntax).",
+    )
 
     meta_title = models.CharField(
-        max_length=300, blank=True, null=True,
-        help_text="Page title")
+        max_length=300, blank=True, null=True, help_text="Page title"
+    )
     meta_description = models.CharField(
-        max_length=300, blank=True, null=True,
-        help_text="Page description")
+        max_length=300, blank=True, null=True, help_text="Page description"
+    )
     meta_image = models.URLField(
-        blank=True, null=True,
-        help_text="Share image URL")
+        blank=True, null=True, help_text="Share image URL"
+    )
 
     # Extra metadata, provided by django-foreignform
     extras = JSONField(blank=True, null=True)
 
     publish_path = models.CharField(
-        max_length=300, blank=True, unique=True,
+        max_length=300,
+        blank=True,
+        unique=True,
         help_text="A relative path you can use when \
         publishing the slackchat, e.g., \
         <span style='color:grey; font-weight:bold;'>/2018-02-12/econ-chat/\
-        </span>."
+        </span>.",
     )
 
     publish_time = models.DateTimeField(
-        default=timezone.now, help_text="Dateline.")
+        default=timezone.now, help_text="Dateline."
+    )
 
     live = models.BooleanField(
-        default=False, help_text="Determines whether page should re-poll for new messages \
-        while chat is live.")
+        default=False,
+        help_text="Determines whether page should re-poll for new messages \
+        while chat is live.",
+    )
 
     @property
     def published_link(self):
         if settings.PUBLISH_ROOT:
             relative_path = os.path.join(
-                self.chat_type.publish_path,
-                self.publish_path.lstrip('/')
-            ).lstrip('/')
+                self.chat_type.publish_path, self.publish_path.lstrip("/")
+            ).lstrip("/")
             link = urljoin(settings.PUBLISH_ROOT, relative_path)
             return mark_safe(
-                '<a href="{0}" target="_blank">{0}</a>'.format(link))
+                '<a href="{0}" target="_blank">{0}</a>'.format(link)
+            )
         else:
             return os.path.join(
-                self.chat_type.publish_path,
-                self.publish_path.lstrip('/')
+                self.chat_type.publish_path, self.publish_path.lstrip("/")
             )
 
     @property
     def api_link(self):
-        link = reverse('slackchat-channel-detail', args=[self.id])
-        return mark_safe(
-            '<a href="{0}" target="_blank">{0}</a>'.format(link))
+        link = reverse("slackchat-channel-detail", args=[self.id])
+        return mark_safe('<a href="{0}" target="_blank">{0}</a>'.format(link))
 
     @property
     def slack_link(self):
@@ -97,24 +108,22 @@ class Channel(models.Model):
             return mark_safe(
                 '<a href="slack://channel?id={0}&team={1}"\
                  target="_blank">{2}</a>'.format(
-                    self.api_id,
-                    self.team_id,
-                    self.slackchat
-                ))
+                    self.api_id, self.team_id, self.slackchat
+                )
+            )
         else:
-            return '-'
+            return "-"
 
     @property
     def slackchat(self):
-        return 'slackchat-{}'.format(self.id.hex[:10])
+        return "slackchat-{}".format(self.id.hex[:10])
 
     def save(self, *args, **kwargs):
         if self.publish_path:
             self.publish_path = escape_uri_path(self.publish_path)
         else:
-            self.publish_path = '/{}/{}/'.format(
-                datetime.today().strftime('%Y-%m-%d'),
-                self.id.hex[:8]
+            self.publish_path = "/{}/{}/".format(
+                datetime.today().strftime("%Y-%m-%d"), self.id.hex[:8]
             )
         super().save(*args, **kwargs)
 

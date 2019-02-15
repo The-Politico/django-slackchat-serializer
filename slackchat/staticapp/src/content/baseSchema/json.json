@@ -1,0 +1,47 @@
+{
+  "title": "Edit Slackchat",
+  "type": "object",
+  "required": [
+    "chat_type"
+  ],
+  "properties": {
+    "live": {
+      "type": "boolean",
+      "title": "Live"
+    },
+    "chat_type": {
+      "type": "integer",
+      "title": "Chat Type"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "introduction": {
+      "type": "string",
+      "title": "Introduction"
+    },
+    "publish_path": {
+      "type": "string",
+      "title": "URL Path"
+    },
+    "meta": {
+      "type": "object",
+      "title": "SEO",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description"
+        },
+        "image": {
+          "type": "string",
+          "title": "Image"
+        }
+      }
+    }
+  }
+}

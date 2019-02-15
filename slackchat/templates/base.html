@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+
+    {% block universal-meta %}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8">
+    <meta name="robots" content="noarchive">
+    {% endblock %}
+
+    {% block page-meta %}
+    {% endblock %}
+
+    {% block title %}
+    <title>Slackchat CMS</title>
+    {% endblock %}
+
+
+    {% block styles %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    {% endblock %}
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+      crossorigin="anonymous">
+    </script>
+    <!--Typekit-->
+    <link rel="stylesheet" href="https://use.typekit.net/ogn0czn.css">
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <!-- end -->
+
+    {% block api %}
+    <meta name="CMS_TOKEN" content="{{ CMS_TOKEN }}">
+    <meta name="API_ROOT" content="{{ API_ROOT }}">
+    <meta name="PAGE" content="{{ active_page }}">
+    {% endblock %}
+  </head>
+  <body>
+    {% block nav %}
+    <nav class="global">
+      <div class="header-left bt-icon--house">
+        <a href="https://www.politico.com">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><path d="M79.5,81.458h-57V41.27L51,16.729L79.5,41.27V81.458z M25.5,78.458h51V42.646L51,20.688L25.5,42.646V78.458z"></path>
+          </svg>
+        </a>
+      </div>
+      <b class="bt-icon bt-icon--politico"></b>
+      <a href="{% url 'cms-list' %}" title="POLITICO Slack Chat" target="_top"><span class="project-name">/ Slack Chat</span></a>
+
+    <div class="float-right">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link {% if active_page == 'new' %}active{% endif %}" href="{% url  'cms-detail-new'%}" title="New Article">New Chat</a>
+        </li>
+      </ul>
+    </div>
+    </nav>
+    {% endblock %}
+
+
+    {% block content %}
+    <div id="app" class="react-app"></div>
+    {% endblock %}
+
+
+    {% block footer %}
+    <footer>
+      <p class="text-center"> Brought to you by the POLITICO Interactive News Team</p>
+      <p></p>
+    </footer>
+    {% endblock %}
+
+    {% block data %}
+    <script>
+      window.CHAT_DATA = JSON.parse({{ data | safe }});
+    </script>
+    {% endblock %}
+
+    {% block app %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+
+  </body>
