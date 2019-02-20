@@ -12,8 +12,6 @@
   {{ block.super }}
 
   <script>
-    window.CHAT_TYPE = JSON.parse({{ chat_type | safe }});
-    window.ALL_CHAT_TYPES = JSON.parse({{ all_chat_types | safe }});
     window.LOGGED_IN_USER = JSON.parse({{ user | safe }});
   </script>
 {% endblock %}

@@ -73,7 +73,12 @@ class Channel(models.Model):
     )
 
     publish_time = models.DateTimeField(
-        default=timezone.now, help_text="Dateline."
+        null=True, blank=True, help_text="Dateline."
+    )
+
+    published = models.BooleanField(
+        default=False,
+        help_text="Determines if the page should be live (for renderer)",
     )
 
     live = models.BooleanField(

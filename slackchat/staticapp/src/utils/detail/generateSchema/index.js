@@ -1,23 +1,9 @@
-import DetailForm from './DetailForm';
 import isEmpty from 'lodash/isEmpty';
+import getChatType from 'Utils/getChatType';
 
-const { CHAT_DATA: chatData, ALL_CHAT_TYPES: allChatTypes } = window;
+import DetailForm from './DetailForm';
 
-const getSchema = (form, data, schemas = [], enums = []) => {
-  form.update(data);
-
-  schemas.forEach(s => {
-    form.register(s.name, s.data);
-  });
-
-  enums.forEach(e => {
-    form.enum(e.name, e.data);
-  });
-
-  console.log('form-render', form.render());
-
-  return form.render();
-};
+const { ALL_CHAT_TYPES: allChatTypes } = window;
 
 const customEnums = [
   {
@@ -33,7 +19,9 @@ const customEnums = [
   },
 ];
 
-export default chatType => {
+export default (data = {}) => {
+  const chatType = getChatType(data.chat_type);
+
   const noCustomSchema = isEmpty(chatType) || chatType.jsonSchema === null || chatType.uiSchema === null;
   const customSchemas = noCustomSchema ?
     [] :
@@ -43,5 +31,16 @@ export default chatType => {
     }];
 
   const form = new DetailForm();
-  return getSchema(form, chatData, customSchemas, customEnums);
+
+  customSchemas.forEach(s => {
+    form.register(s.name, s.data);
+  });
+
+  customEnums.forEach(e => {
+    form.enum(e.name, e.data);
+  });
+
+  form.update(data);
+
+  return form.render();
 };

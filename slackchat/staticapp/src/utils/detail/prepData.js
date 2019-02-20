@@ -12,6 +12,10 @@ export default (data, newPage) => {
   delete output.api_id;
   delete output.owner;
 
+  if (output.publish_time === '') {
+    output.publish_time = null;
+  }
+
   if (newPage) {
     output.owner = window.LOGGED_IN_USER.pk;
   }

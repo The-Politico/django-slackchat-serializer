@@ -1,3 +1,4 @@
+import random
 from django.conf import settings as project_settings
 
 
@@ -5,7 +6,21 @@ class Settings:
     pass
 
 
-Settings.CMS_TOKEN = getattr(project_settings, "SLACKCHAT_CMS_TOKEN", None)
+Settings.CMS_TOKEN = getattr(
+    project_settings, "SLACKCHAT_CMS_TOKEN", "%032x" % random.getrandbits(128)
+)
+
+Settings.PUBLISH_ROOT = getattr(
+    project_settings,
+    "SLACKCHAT_PUBLISH_ROOT",
+    "https://example.com/slackchat-root/",
+)
+
+Settings.SLACK_TEAM_ROOT = getattr(
+    project_settings, "SLACKCHAT_TEAM_ROOT", "https://example.com/slack/"
+)
+
+Settings.MANAGERS = getattr(project_settings, "SLACKCHAT_MANAGERS", [])
 
 Settings.SLACK_VERIFICATION_TOKEN = getattr(
     project_settings, "SLACKCHAT_SLACK_VERIFICATION_TOKEN", None

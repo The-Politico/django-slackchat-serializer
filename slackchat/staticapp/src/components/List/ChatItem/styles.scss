@@ -1,0 +1,41 @@
+@import '~politico-style/scss/base/theme/colors/_brand.scss';
+
+.component :global {
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+
+  p {
+    max-width: none;
+  }
+
+  .context {
+    margin-bottom:  0;
+
+    .col:first-of-type {
+      padding-left: 0;
+    }
+
+    .col:last-of-type {
+      padding-right: 0;
+    }
+
+    .emoji {
+      margin-left: 5px;
+    }
+
+    a {
+      color: #212529;
+      text-decoration: underline;
+    }
+  }
+
+
+
+  .publish-time {
+    color: $politico-light-gray-type;
+    font-size: 13px;
+    margin-top: 0;
+  }
+}

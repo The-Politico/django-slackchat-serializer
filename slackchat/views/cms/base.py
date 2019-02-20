@@ -5,9 +5,6 @@ from slackchat.conf import settings as app_settings
 
 
 class CMSBase(object):
-    CMS_TOKEN = app_settings.CMS_TOKEN
-    API_ROOT = reverse_lazy("cms-api")
-
     @staticmethod
     def prep_data_for_injection(queryset, serializer, many=False):
         if serializer:
@@ -19,6 +16,8 @@ class CMSBase(object):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["CMS_TOKEN"] = self.CMS_TOKEN
-        context["API_ROOT"] = self.API_ROOT
+        context["PUBLISH_ROOT"] = app_settings.PUBLISH_ROOT
+        context["SLACK_TEAM_ROOT"] = app_settings.SLACK_TEAM_ROOT
+        context["CMS_TOKEN"] = app_settings.CMS_TOKEN
+        context["API_ROOT"] = reverse_lazy("cms-api")
         return context

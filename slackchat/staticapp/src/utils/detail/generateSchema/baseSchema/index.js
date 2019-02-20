@@ -1,4 +1,4 @@
-import json from './json.json';
+import json from './json.js';
 import ui from './ui.js';
 
 export default {

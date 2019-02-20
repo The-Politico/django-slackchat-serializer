@@ -1,11 +1,13 @@
 import re
 import uuid
+import json
 
 import requests
 
 from celery import shared_task
 from slackchat.conf import settings
 from slackchat.models import Webhook
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 @shared_task(acks_late=True)
@@ -31,11 +33,26 @@ def post_webhook(channel_id, chat_type, update_type=None, message=None):
 
 
 @shared_task(acks_late=True)
-def post_webhook_republish(channel_id, chat_type):
+def post_webhook_republish(channel, chat_type):
     data = {
         "token": settings.WEBHOOK_VERIFICATION_TOKEN,
         "type": "republish_request",
-        "channel": channel_id,
+        "channel": channel["id"],
+        "channel_data": json.dumps(channel, cls=DjangoJSONEncoder),
+        "chat_type": chat_type,
+    }
+    for webhook in Webhook.objects.all():
+        if webhook.verified:
+            requests.post(webhook.endpoint, json=data)
+
+
+@shared_task(acks_late=True)
+def post_webhook_unpublish(channel, chat_type):
+    data = {
+        "token": settings.WEBHOOK_VERIFICATION_TOKEN,
+        "type": "unpublish_request",
+        "channel": channel["id"],
+        "channel_data": json.dumps(channel, cls=DjangoJSONEncoder),
         "chat_type": chat_type,
     }
     for webhook in Webhook.objects.all():

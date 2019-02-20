@@ -111,6 +111,7 @@ class ChannelCMSSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     meta = serializers.SerializerMethodField()
     owner = serializers.SerializerMethodField()
+    publish_time = serializers.SerializerMethodField()
 
     def get_owner(self, obj):
         return obj.owner.id
@@ -131,6 +132,9 @@ class ChannelCMSSerializer(serializers.ModelSerializer):
     def get_title(self, obj):
         return blankify_nulls(obj.title)
 
+    def get_publish_time(self, obj):
+        return blankify_nulls(obj.publish_time)
+
     class Meta:
         model = Channel
         fields = (
@@ -143,5 +147,7 @@ class ChannelCMSSerializer(serializers.ModelSerializer):
             "meta",
             "extras",
             "publish_path",
+            "publish_time",
+            "published",
             "live",
         )
