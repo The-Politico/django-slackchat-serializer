@@ -18,11 +18,15 @@
     }
 
     &.error {
-      color: $politico-dark-red;
+      p {
+        color: $politico-dark-red;
+      }
     }
 
     &.success {
-      color: green;
+      p {
+        color: green;
+      }
     }
   }
 }

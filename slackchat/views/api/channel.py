@@ -1,26 +1,26 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from slackchat.serializers import ChannelCMSSerializer, ChannelSerializer
 from slackchat.models import Channel, ChatType, User
 from slackchat.celery import post_webhook_republish, post_webhook_unpublish
+from slackchat.authentication import TokenAPIAuthentication
 
 
 channelNotFound404 = Response(
-    {"text": "Channel not found. It may have been deleted."}, 404
+    {"detail": "Channel not found. It may have been deleted."}, 404
 )
 
 typeNotFound404 = Response(
-    {"text": "Chat type not found. It may have been deleted."}, 404
+    {"detail": "Chat type not found. It may have been deleted."}, 404
 )
 
 userNotFound404 = Response(
-    {"text": "User not found. It may have been deleted."}, 404
+    {"detail": "User not found. It may have been deleted."}, 404
 )
 
 notUnique400 = Response(
     {
-        "text": "This publish path is already being used. Change the path"
+        "detail": "This publish path is already being used. Change the path"
         + " or chat type and try again."
     },
     400,
@@ -32,7 +32,7 @@ class ChannelDeserializer(APIView):
     View to handle data from CMS.
     """
 
-    authentication_classes = ()
+    authentication_classes = (TokenAPIAuthentication,)
     permission_classes = ()
 
     @staticmethod

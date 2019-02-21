@@ -1,10 +1,13 @@
 import json
+from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 from django.core.serializers.json import DjangoJSONEncoder
 from slackchat.conf import settings as app_settings
+from slackchat.authentication import secure
 
 
-class CMSBase(object):
+@secure
+class CMSBase(TemplateView):
     @staticmethod
     def prep_data_for_injection(queryset, serializer, many=False):
         if serializer:

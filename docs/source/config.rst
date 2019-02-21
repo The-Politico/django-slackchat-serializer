@@ -17,6 +17,19 @@ Slack app `verification token <https://api.slack.com/docs/token-types#verificati
 
 Slack app `OAuth access token <https://api.slack.com/docs/token-types#user>`_.
 
+:code:`SLACKCHAT_PUBLISH_ROOT`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The URL root of your front end. It will be combined with the :code:`publish_path` of both the :code:`ChatType` and :code:`Channel` to create preview links in the CMS.
+
+For example, if you have a :code:`ChatType` with the :code:`publish_path` of :code:`/my-custom-type/` and your channel's :code:`publish_path` is :code:`my-chat` you might expect that this chat will be published at :code:`https://my-site.com/slack-chats/my-custom-type/my-chat/`. In this case your :code:`SLACKCHAT_PUBLISH_ROOT` would be :code:`https://my-site.com/slack-chats/`.
+
+:code:`SLACKCHAT_TEAM_ROOT`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The URL for your Slack team. It should take the form of :code:`https://your-team.slack.com`. This is also used to create links in your CMS.
+
+:code:`SLACKCHAT_DEFAULT_OWNER`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Slack user ID for the default owner of new Slack Chats. While the CMS requires that user's be logged in, if the logged-in Django user does not have a matching Slackchat user, this default owner will be set as the owner and invited to any new chats.
 
 Additional config
 -----------------
@@ -55,7 +68,7 @@ A function used to create a `user_templates object in markslack <https://github.
   )
 
 :code:`SLACK_MARKSLACK_LINK_TEMPLATES`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A markslack `link_templates object <https://github.com/The-Politico/markslack#link-templates>`_.
 
@@ -94,3 +107,22 @@ A function used to set the `upload path <https://docs.djangoproject.com/en/2.0/r
       )
 
   SLACKCHAT_USER_IMAGE_UPLOAD_TO = default_user_image_upload_to
+
+
+:code:`SLACKCHAT_MANAGERS`
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+An array of Slack User IDs. These users will be automatically invited to any new channels made by this app.
+
+.. code-block:: python
+
+  # default
+  SLACKCHAT_MANAGERS = []
+
+:code:`SLACKCHAT_CMS_TOKEN`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A token used to authenticate API requests made by the CMS. Defaults to a random hash created on server startup, but you can use this setting to set it explicitly if you want to use the API endpoint to create/update Channel models.
+
+.. code-block:: python
+
+  # default
+  SLACKCHAT_CMS_TOKEN = "%032x" % random.getrandbits(128)

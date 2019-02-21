@@ -4,6 +4,6 @@ export const willPublish = path => ({
 });
 
 export const willNotPublish = path => ({
-  statusText: `Clicking save will **DELETE** [this chat page](${path}/), if it exists.`,
+  statusText: `Clicking save will **UNPUBLISH** [this chat page](${path}/), if it exists.`,
   statusLevel: 'info',
 });

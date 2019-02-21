@@ -133,4 +133,5 @@ SLACKCHAT_SLACK_API_TOKEN = os.getenv("SLACK_API_TOKEN", None)
 SLACKCHAT_PUBLISH_ROOT = "https://politico.com/interactives/live-analysis/"
 SLACKCHAT_TEAM_ROOT = "https://briz-playground.slack.com"
 SLACKCHAT_MANAGERS = ["UELJYGUAJ"]
+SLACKCHAT_DEFAULT_OWNER = "UELJYGUAJ"
 SLACK_WEBHOOK_VERIFICATION_TOKEN = "%032x" % random.getrandbits(128)

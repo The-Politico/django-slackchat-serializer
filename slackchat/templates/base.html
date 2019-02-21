@@ -34,11 +34,15 @@
     <!-- end -->
 
     {% block api %}
+
+    <!-- CMS Metadata -->
     <meta name="CMS_TOKEN" content="{{ CMS_TOKEN }}">
     <meta name="PUBLISH_ROOT" content="{{ PUBLISH_ROOT }}">
     <meta name="SLACK_TEAM_ROOT" content="{{ SLACK_TEAM_ROOT }}">
     <meta name="API_ROOT" content="{{ API_ROOT }}">
     <meta name="PAGE" content="{{ active_page }}">
+    <!-- end -->
+
     {% endblock %}
   </head>
   <body>

@@ -42,10 +42,10 @@ For example, you could use Django Rest Framework in a view to respond to the cha
 
   If you need to fire a repeat verification request because your endpoint didn't respond correctly the first time or because the endpoint URL changed, simply open the :code:`Webhook` instance in Django's admin and re-save it.
 
-Payload
--------
+Update Payload
+--------------
 
-Whenever one of the notification models is updated, the webhook will send a payload with the ID of the channel that was updated, allowing your renderer to hit the channel's API and republish the updated data.
+Whenever one of the notification models is updated, the app will send a payload to every verified endpoint with the ID of the channel that was updated, allowing your renderer to hit the channel's API and republish the updated data.
 
 .. code-block:: json
 
@@ -61,12 +61,51 @@ If the type of the webhook is :code:`update_notification`, the payload will also
 .. code-block:: json
 
   {
-    ...
+    "token": "your-webhook-verification-token",
     "type": "update_notification",
+    "channel": "a-channel-uuid-xxxx...",
+    "chat_type": "a-chat-type"
+
     "update_type": "message_added",
     "message": {
       "timestamp": "2018-10-16T17:23:49.000100Z",
       "user": "USERID",
       "content": "A new message."
     }
+  }
+
+
+Explicit Payloads
+-----------------
+
+Users can also use the Django admin or CMS to send endpoints explicit request payloads.
+
+:code:`republish_request`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A request to publish (or republish) all static assets associated with the channel. It carries with it the channel data as a serialized JSON string.
+
+.. code-block:: json
+
+  {
+    token: 'your-webhook-verification-token',
+    type: 'republish_request',
+    channel: 'a-channel-uuid-xxxx...',
+    channel_data: '{ ... "title": "Channel Title", "introduction": "Lorem ipsum", ... }',
+    chat_type: 'a-chat-type'
+  }
+
+:code:`unpublish_request`
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A request to unpublish (or otherwise remove) all static assets associated with the channel. It carries with it the channel data as a serialized JSON string.
+
+.. code-block:: json
+
+  {
+    token: 'your-webhook-verification-token',
+    type: 'unpublish_request',
+    channel: 'a-channel-uuid-xxxx...',
+    channel_data: '{ ... "title": "Channel Title", "introduction": "Lorem ipsum", ... }',
+    chat_type: 'a-chat-type'
   }

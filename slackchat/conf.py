@@ -22,6 +22,10 @@ Settings.SLACK_TEAM_ROOT = getattr(
 
 Settings.MANAGERS = getattr(project_settings, "SLACKCHAT_MANAGERS", [])
 
+Settings.DEFAULT_OWNER = getattr(
+    project_settings, "SLACKCHAT_DEFAULT_OWNER", None
+)
+
 Settings.SLACK_VERIFICATION_TOKEN = getattr(
     project_settings, "SLACKCHAT_SLACK_VERIFICATION_TOKEN", None
 )

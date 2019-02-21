@@ -51,9 +51,9 @@ class App extends React.Component {
 
   onSave = resp => resp.json().then(data => {
     if (!resp.ok) {
-      this.setState(status.error.server(data.text));
+      this.setState(status.error.server(data.detail));
     } else {
-      return this.saveCallback(data);
+      this.saveCallback(data);
     }
   }).catch(err => {
     console.error(err);
@@ -76,7 +76,6 @@ class App extends React.Component {
       }
 
       const newStatus = generateStatus(data);
-      console.log(newStatus);
 
       return assign({}, {
         data,

@@ -3,6 +3,8 @@ export default (data = {}) => ({
   'required': [
     'chat_type',
     'publish_path',
+    'title',
+    'introduction',
   ],
   'properties': {
     'published': {

@@ -1,16 +1,15 @@
-from django.views.generic import TemplateView
-from slackchat.models import Channel, ChatType, User, Webhook
+from slackchat.models import Channel, ChatType, User
 from slackchat.serializers import (
     ChannelCMSSerializer,
     ChatTypeSerializer,
     UserCMSSerializer,
-    WebhookSerializer,
 )
+from slackchat.conf import settings
 from django.shortcuts import get_object_or_404
 from .base import CMSBase
 
 
-class CMSDetail(CMSBase, TemplateView):
+class CMSDetail(CMSBase):
     template_name = "detail.html"
 
     def get_context_data(self, **kwargs):
@@ -32,8 +31,13 @@ class CMSDetail(CMSBase, TemplateView):
         else:
             context["active_page"] = "new"
 
+            try:
+                user = User.objects.get(email=self.request.user)
+            except User.DoesNotExist:
+                user = get_object_or_404(User, api_id=settings.DEFAULT_OWNER)
+
             context["user"] = CMSBase.prep_data_for_injection(
-                get_object_or_404(User, email=self.request.user),
+                user,
                 UserCMSSerializer,
             )
             context["data"] = CMSBase.prep_data_for_injection({}, None)
