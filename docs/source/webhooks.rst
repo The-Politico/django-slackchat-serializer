@@ -88,11 +88,11 @@ A request to publish (or republish) all static assets associated with the channe
 .. code-block:: json
 
   {
-    token: 'your-webhook-verification-token',
-    type: 'republish_request',
-    channel: 'a-channel-uuid-xxxx...',
-    channel_data: '{ ... "title": "Channel Title", "introduction": "Lorem ipsum", ... }',
-    chat_type: 'a-chat-type'
+    token: "your-webhook-verification-token",
+    type: "republish_request",
+    channel: "a-channel-uuid-xxxx...",
+    channel_data: "{ ... \"title\": \"Channel Title\", \"introduction\": \"Lorem ipsum\", ... }",
+    chat_type: "a-chat-type"
   }
 
 :code:`unpublish_request`
@@ -103,9 +103,9 @@ A request to unpublish (or otherwise remove) all static assets associated with t
 .. code-block:: json
 
   {
-    token: 'your-webhook-verification-token',
-    type: 'unpublish_request',
-    channel: 'a-channel-uuid-xxxx...',
-    channel_data: '{ ... "title": "Channel Title", "introduction": "Lorem ipsum", ... }',
-    chat_type: 'a-chat-type'
+    token: "your-webhook-verification-token",
+    type: "unpublish_request",
+    channel: "a-channel-uuid-xxxx...",
+    channel_data: "{ ... "title": "Channel Title", "introduction": "Lorem ipsum", ... }",
+    chat_type: "a-chat-type"
   }
