@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Sketch } from 'politico-style';
+import Header from 'politico-style/js/lib/components/sketch/content/Header';
 import ChatItem from './ChatItem';
 import RightRail from './RightRail';
 
@@ -11,7 +11,7 @@ class App extends React.Component {
     return (
       <div className={styles.component + ' list-container'}>
         <article className='cms-list container'>
-          <Sketch.Header title='Slack Chat'></Sketch.Header>
+          <Header title='Slack Chat' />
 
           <div className='row'>
             <div className='center-well col-9'>

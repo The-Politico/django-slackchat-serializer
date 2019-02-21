@@ -1,5 +1,5 @@
 import React from 'react';
-import dateFns from 'date-fns';
+import format from 'ap-style-date';
 
 const PublishDate = (props) => {
   if (!props.children) { return null; }
@@ -7,7 +7,7 @@ const PublishDate = (props) => {
   return (
     <p className='publish-time'>
       <em>
-        Published {dateFns.format(new Date(props.children), 'MMM. D, YYYY')}
+        Published {format.longAP(props.children)}
       </em>
     </p>
   );

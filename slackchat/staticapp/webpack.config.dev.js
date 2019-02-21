@@ -50,21 +50,20 @@ const config = (env, argv, port) => ({
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
+        test: /\.(js|jsx)$/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['@babel/env', {
-                targets: {
-                  browsers: 'last 2 versions',
+              ['@babel/preset-env', {
+                'targets': {
+                  'browsers': 'last 2 versions',
                 },
               }],
-              '@babel/react',
+              '@babel/preset-react',
             ],
             plugins: [
-              '@babel/proposal-class-properties',
+              '@babel/plugin-proposal-class-properties',
             ],
           },
         },

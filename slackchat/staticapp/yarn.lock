@@ -1011,6 +1011,11 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
+ap-style-date@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/ap-style-date/-/ap-style-date-0.5.7.tgz#a6ae438fa9e03e3cde09c703dd01c17d34e88ee3"
+  integrity sha512-eXHI0WEOAe1BhQl3BusJ7DpkAChzi+znbudj8wJIW9Qiq02KlkVhj+9YZW2XS+hjD8qg0k1XFw9tCGifBsR57Q==
+
 aproba@^1.0.3, aproba@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
@@ -6200,6 +6205,13 @@ react-switch@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-4.0.1.tgz#6adace6126f15ff5efbbf104936a7f5846619097"
   integrity sha512-RKo0VDbETmVPHfyP9m89YHhl9i0dtI1+3OuQsFhZi16ynEnRseRLR81wttrimfpa9nkqgICWoG6KnR7fFKJvrA==
+  dependencies:
+    prop-types "^15.6.2"
+
+react-switch@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-4.1.0.tgz#93379df044c9febe86d0b1485cb14b2a364562b6"
+  integrity sha512-mINolJx85ZojtsKdH+DE+p9i073a1mQscEADF6y/FLBshSmyciZffBWP0xu8jWyqRIg7tWykFLJt+2xlMya7sw==
   dependencies:
     prop-types "^15.6.2"
 
