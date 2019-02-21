@@ -42,6 +42,7 @@
     "webpack": "*",
     "webpack-cli": "*",
     "webpack-dev-server": "*",
+    "webpack-visualizer-plugin": "^0.1.11",
     "yargs": "*"
   }
 }

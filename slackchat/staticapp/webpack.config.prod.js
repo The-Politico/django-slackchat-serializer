@@ -3,6 +3,7 @@ const glob = require('glob');
 const _ = require('lodash');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const Visualizer = require('webpack-visualizer-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
@@ -31,21 +32,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
+        test: /\.(js|jsx)$/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
               ['@babel/preset-env', {
-                targets: {
-                  browsers: 'last 2 versions',
+                'targets': {
+                  'browsers': 'last 2 versions',
                 },
               }],
               '@babel/preset-react',
             ],
             plugins: [
-              '@babel/proposal-class-properties',
+              '@babel/plugin-proposal-class-properties',
             ],
           },
         },
@@ -65,8 +65,7 @@ module.exports = {
             sourceMap: true,
           },
         }],
-      },
-      {
+      }, {
         test: /\.s?css$/,
         exclude: /theme.*\.s?css$/,
         use: [{
@@ -100,5 +99,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
     }),
+    new Visualizer(),
   ],
 };
