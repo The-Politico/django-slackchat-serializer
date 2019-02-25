@@ -3,10 +3,21 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from slackchat.serializers import MessageSerializer
 
-from .celery import (create_private_channel, post_webhook, update_users,
-                     verify_webhook)
-from .models import (Attachment, Channel, KeywordArgument, Message, Reaction,
-                     User, Webhook)
+from .celery import (
+    create_private_channel,
+    post_webhook,
+    update_users,
+    verify_webhook,
+)
+from .models import (
+    Attachment,
+    Channel,
+    KeywordArgument,
+    Message,
+    Reaction,
+    User,
+    Webhook,
+)
 
 
 @receiver(post_save, sender=Channel)

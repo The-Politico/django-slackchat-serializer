@@ -8,6 +8,13 @@ from .message import MessageSerializer
 from .user import UserSerializer
 
 
+def blankify_nulls(val):
+    if val is None:
+        return ""
+
+    return val
+
+
 class ChannelSerializer(serializers.ModelSerializer):
     chat_type = serializers.SerializerMethodField()
     publish_path = serializers.SerializerMethodField()
@@ -96,3 +103,51 @@ class ChannelListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Channel
         fields = ("id", "api_id", "chat_type")
+
+
+class ChannelCMSSerializer(serializers.ModelSerializer):
+    chat_type = serializers.SerializerMethodField()
+    introduction = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    meta = serializers.SerializerMethodField()
+    owner = serializers.SerializerMethodField()
+    publish_time = serializers.SerializerMethodField()
+
+    def get_owner(self, obj):
+        return obj.owner.id
+
+    def get_chat_type(self, obj):
+        return obj.chat_type.id
+
+    def get_meta(self, obj):
+        return {
+            "title": blankify_nulls(obj.meta_title),
+            "description": blankify_nulls(obj.meta_description),
+            "image": blankify_nulls(obj.meta_image),
+        }
+
+    def get_introduction(self, obj):
+        return blankify_nulls(obj.get_introduction())
+
+    def get_title(self, obj):
+        return blankify_nulls(obj.title)
+
+    def get_publish_time(self, obj):
+        return blankify_nulls(obj.publish_time)
+
+    class Meta:
+        model = Channel
+        fields = (
+            "id",
+            "api_id",
+            "chat_type",
+            "owner",
+            "title",
+            "introduction",
+            "meta",
+            "extras",
+            "publish_path",
+            "publish_time",
+            "published",
+            "live",
+        )

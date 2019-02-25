@@ -92,13 +92,17 @@ Slack configuration
   .. image:: ./images/api-token.png
     :width: 500px
 
+4. Add these permission scopes: :code:`groups:history`, :code:`groups:write`, :code:`reactions:read`, :code:`users:read`.
 
-3. Enable `events subscriptions <https://api.slack.com/events-api>`_ in your app and configure the Request URL to hit slackchat-serializer's events endpoint. (Slackchat will automatically verify the URL with Slack.)
+.. image:: ./images/scopes.png
+  :width: 500px
+
+5. Enable `events subscriptions <https://api.slack.com/events-api>`_ in your app and configure the Request URL to hit slackchat-serializer's events endpoint. (Slackchat will automatically verify the URL with Slack.)
 
   .. image:: ./images/events.png
     :width: 500px
 
-4. Subscribe to these workspace events: :code:`message.groups`, :code:`reaction_added` and :code:`reaction_removed`.
+6. Subscribe to these workspace events: :code:`message.groups`, :code:`reaction_added` and :code:`reaction_removed`.
 
   .. image:: ./images/workspace-events.png
     :width: 500px

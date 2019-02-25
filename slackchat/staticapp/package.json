@@ -1,0 +1,49 @@
+{
+  "name": "slackchat-staticapp",
+  "version": "0.0.1",
+  "description": "Static assets for slackchat, a Django app.",
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.config.dev.js",
+    "build": "webpack --mode=production --config webpack.config.prod.js"
+  },
+  "dependencies": {
+    "ap-style-date": "^0.5.7",
+    "classnames": "*",
+    "ellipsize": "^0.1.0",
+    "lodash": "*",
+    "politico-style": "3.0.13",
+    "react": "*",
+    "react-dom": "*",
+    "react-jsonschema-form": "^1.2.1",
+    "react-loader-spinner": "^2.3.0",
+    "react-markdown": "^4.0.6",
+    "react-stickynode": "^2.1.1",
+    "react-switch": "^4.1.0",
+    "whatwg-fetch": "*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.56",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.56",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
+    "@babel/polyfill": "^7.0.0-beta.56",
+    "@babel/preset-env": "^7.0.0-beta.56",
+    "@babel/preset-react": "^7.0.0-beta.56",
+    "@politico/eslint-config-interactives": "*",
+    "babel-loader": "^8.0.0-beta",
+    "css-loader": "*",
+    "eslint": "*",
+    "mini-css-extract-plugin": "*",
+    "node-sass": "*",
+    "optimize-css-assets-webpack-plugin": "*",
+    "portfinder": "*",
+    "sass-loader": "*",
+    "style-loader": "*",
+    "uglifyjs-webpack-plugin": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "*",
+    "webpack-visualizer-plugin": "^0.1.11",
+    "yargs": "*"
+  }
+}

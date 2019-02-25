@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'slackchat/css/main.detail.css' %}">
+{% endblock %}
+
+
+{% block data %}
+  {{ block.super }}
+
+  <script>
+    window.LOGGED_IN_USER = JSON.parse({{ user | safe }});
+  </script>
+{% endblock %}
+
+{% block app %}
+<script type="text/javascript" src="{% static 'slackchat/js/main.detail.js' %}"></script>
+{% endblock %}

@@ -154,5 +154,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+node_modules
+
 
 # End of https://www.gitignore.io/api/python,django,macos,linux

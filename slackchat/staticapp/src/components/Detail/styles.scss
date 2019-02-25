@@ -1,0 +1,52 @@
+@import '~politico-style/scss/base/theme/fonts';
+
+
+.component :global {
+  .container {
+    max-width: 850px;
+  }
+
+  .right-rail {
+    padding-top: 70px;
+
+    button {
+      margin-top: 10px;
+
+      &.disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .center-well,
+    .right-rail {
+      flex: 0 0 100%;
+      width: 100%;
+      max-width: none;
+    }
+  }
+
+  .rjsf {
+    #root__title {
+      text-align: center;
+    }
+
+    .help-block {
+      color: #6c757d;
+      font-size: 80%;
+      font-weight: 400;
+      margin: 0;
+      margin-top: 0.25rem;
+      font-family: $din;
+    }
+
+    .field-object {
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      margin-top: 60px;
+    }
+  }
+}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import random
 
 import dj_database_url
 
@@ -129,3 +130,8 @@ SLACKCHAT_SLACK_VERIFICATION_TOKEN = os.getenv(
     "SLACK_VERIFICATION_TOKEN", None
 )
 SLACKCHAT_SLACK_API_TOKEN = os.getenv("SLACK_API_TOKEN", None)
+SLACKCHAT_PUBLISH_ROOT = "https://politico.com/interactives/live-analysis/"
+SLACKCHAT_TEAM_ROOT = "https://briz-playground.slack.com"
+SLACKCHAT_MANAGERS = ["UELJYGUAJ"]
+SLACKCHAT_DEFAULT_OWNER = "UELJYGUAJ"
+SLACK_WEBHOOK_VERIFICATION_TOKEN = "%032x" % random.getrandbits(128)

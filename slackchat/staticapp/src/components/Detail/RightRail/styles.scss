@@ -1,0 +1,32 @@
+@import '~politico-style/scss/base/theme/colors/_brand.scss';
+
+.component :global {
+  .feedback {
+    margin: 0;
+    margin-top: 0.25rem;
+
+    p {
+      color: $politico-dark-gray-type;
+      font-size: 80%;
+      font-weight: 400;
+      font-family: "din-2014", "Raleway", sans-serif;
+
+      a {
+        color: $politico-dark-gray-type;
+        text-decoration: underline;
+      }
+    }
+
+    &.error {
+      p {
+        color: $politico-dark-red;
+      }
+    }
+
+    &.success {
+      p {
+        color: green;
+      }
+    }
+  }
+}

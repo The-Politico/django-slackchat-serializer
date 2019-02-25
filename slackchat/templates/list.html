@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'slackchat/css/main.list.css' %}">
+{% endblock %}
+
+
+{% block app %}
+<script type="text/javascript" src="{% static 'slackchat/js/main.list.js' %}"></script>
+{% endblock %}

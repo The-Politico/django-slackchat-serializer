@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+
+    {% block universal-meta %}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8">
+    <meta name="robots" content="noarchive">
+    {% endblock %}
+
+    {% block page-meta %}
+    {% endblock %}
+
+    {% block title %}
+    <title>Slackchat CMS</title>
+    {% endblock %}
+
+
+    {% block styles %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    {% endblock %}
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+      crossorigin="anonymous">
+    </script>
+    <!--Typekit-->
+    <link rel="stylesheet" href="https://use.typekit.net/ogn0czn.css">
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <!-- end -->
+
+    {% block api %}
+
+    <!-- CMS Metadata -->
+    <meta name="CMS_TOKEN" content="{{ CMS_TOKEN }}">
+    <meta name="PUBLISH_ROOT" content="{{ PUBLISH_ROOT }}">
+    <meta name="SLACK_TEAM_ROOT" content="{{ SLACK_TEAM_ROOT }}">
+    <meta name="API_ROOT" content="{{ API_ROOT }}">
+    <meta name="PAGE" content="{{ active_page }}">
+    <!-- end -->
+
+    {% endblock %}
+  </head>
+  <body>
+    {% block nav %}
+      {% include "nav.html" %}
+    {% endblock %}
+
+
+    {% block content %}
+    <div id="app" class="react-app"></div>
+    {% endblock %}
+
+
+    {% block footer %}
+    <footer>
+      <p class="text-center"> Brought to you by the POLITICO Interactive News Team</p>
+      <p></p>
+    </footer>
+    {% endblock %}
+
+    {% block data %}
+    <script>
+      window.DATA = JSON.parse({{ data | safe }});
+      window.ALL_CHAT_TYPES = JSON.parse({{ all_chat_types | safe }});
+    </script>
+    {% endblock %}
+
+    {% block app %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+
+  </body>
