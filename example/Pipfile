@@ -1,13 +1,10 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-django = "*"
+django = "==2.1.4"
 dj-database-url = "*"
 djangorestframework = "*"
 django-rest-swagger = "*"
@@ -24,8 +21,7 @@ tqdm = "*"
 django-foreignform = ">=0.0.5"
 setuptools = "*"
 twine = "*"
-
+"ed0a5ba" = {path = "./..", editable = true}
 
 [requires]
-
 python_version = "3.6"
