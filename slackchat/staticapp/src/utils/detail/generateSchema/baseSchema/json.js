@@ -10,10 +10,12 @@ export default (data = {}) => ({
     'published': {
       'type': 'boolean',
       'title': 'Publish Status',
+      'default': false,
     },
     'live': {
       'type': 'boolean',
       'title': 'Live',
+      'default': false,
     },
     'chat_type': {
       'type': 'integer',

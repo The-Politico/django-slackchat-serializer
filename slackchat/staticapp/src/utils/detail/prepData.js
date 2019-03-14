@@ -2,20 +2,26 @@ import assign from 'lodash/assign';
 import keys from 'lodash/keys';
 import mapValues from 'lodash/mapValues';
 
-const blankifyUndefineds = data => {
-  return mapValues(data, k => {
-    if (typeof k === 'object') {
-      return blankifyUndefineds(k);
-    } else if (k === undefined) {
+const clean = (data, schema) => {
+  console.log(schema);
+  return mapValues(data, (val, key) => {
+    console.log(key, schema.properties[key]);
+    if (typeof val === 'object') {
+      return clean(val, schema.properties[key]);
+    } else if (schema.properties[key].type === 'string' && val === undefined) {
       return '';
+    } else if (val === undefined) {
+      return null;
     } else {
-      return k;
+      return val;
     }
   });
 };
 
-export default (data, newPage) => {
+export default (data, schema, newPage) => {
   let output = assign({}, data);
+
+  output = clean(output, schema.json);
 
   keys(output.meta).forEach(k => {
     output[`meta_${k}`] = output.meta[k];
@@ -24,8 +30,6 @@ export default (data, newPage) => {
   delete output.meta;
   delete output.api_id;
   delete output.owner;
-
-  output = blankifyUndefineds(output);
 
   if (output.publish_time === '') {
     output.publish_time = null;

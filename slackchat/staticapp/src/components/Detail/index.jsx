@@ -33,7 +33,7 @@ class App extends React.Component {
     const page = this.props.page;
     const newPage = page === 'new';
 
-    const data = prepData(this.state.data, newPage);
+    const data = prepData(this.state.data, this.state.schema, newPage);
 
     let request;
     if (page === 'new') {
