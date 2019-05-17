@@ -121,12 +121,21 @@ class WebhookAdmin(admin.ModelAdmin):
     fields = ("endpoint", "verified")
 
 
+class MessageAdmin(admin.ModelAdmin):
+    actions = ["serialize"]
+
+    def serialize(self, request, queryset):
+        for msg in queryset:
+            msg.serialize()
+        self.message_user(request, "Messages have been reserialized")
+
+
 admin.site.register(Argument)
 admin.site.register(Attachment)
 admin.site.register(Channel, ChannelAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(CustomContentTemplate)
-admin.site.register(Message)
+admin.site.register(Message, MessageAdmin)
 admin.site.register(Reaction)
 admin.site.register(KeywordArgument)
 admin.site.register(ChatType, ChatTypeAdmin)
