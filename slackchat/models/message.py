@@ -35,12 +35,9 @@ class Message(models.Model):
         if len(matches) > 0:
             for template, _ in matches:
                 if template and template.content_template != "":
-                    groups = [
-                        group
-                        for group in re.search(
-                            template.search_string, running_text
-                        ).groups()
-                    ]
+                    groups = re.search(
+                        template.search_string, running_text
+                    ).groups()
                     running_text = template.content_template.format(*groups)
         return running_text
 
@@ -70,7 +67,7 @@ class Message(models.Model):
         if len(matches) > 0:
             for template_schema, match in matches:
                 if match:
-                    groups = [group for group in match.groups()]
+                    groups = match.groups()
                     template = getattr(template_schema, template_type)
                     if isinstance(template, dict):
                         for key in template:
