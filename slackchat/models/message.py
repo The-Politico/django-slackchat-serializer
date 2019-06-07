@@ -35,10 +35,12 @@ class Message(models.Model):
         if len(matches) > 0:
             for template, _ in matches:
                 if template and template.content_template != "":
-                    groups = re.search(
-                        template.search_string, running_text
-                    ).groups()
-                    running_text = template.content_template.format(*groups)
+                    search = re.search(template.search_string, running_text)
+                    if search:
+                        groups = search.groups()
+                        running_text = template.content_template.format(
+                            *groups
+                        )
         return running_text
 
     def get_custom_args(self):
