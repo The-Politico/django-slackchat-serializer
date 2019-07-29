@@ -36,7 +36,7 @@ export default (data = {}) => ({
     'publish_path': {
       'type': 'string',
       'title': 'URL Path',
-      'pattern': `^[A-z/\\-_]*$`,
+      'pattern': `^[A-z0-9/\\-_]*$`,
     },
     'meta': {
       'type': 'object',
