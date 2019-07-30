@@ -40,7 +40,6 @@ class Events(APIView):
             event = slack_message.get("event")
 
             if event.get("type") == "message":
-                logger.info("Slack message received")
                 if event.get("subtype", None) == "message_deleted":
                     handle_message_removed(id, event)
                 elif (
