@@ -25,6 +25,9 @@ class Message(models.Model):
 
     serialized = JSONField(blank=True, null=True)
 
+    def text_summary(self):
+        return self.text[:50]
+
     def html(self):
         return mark_safe(markdown(self.get_content()))
 
@@ -104,4 +107,4 @@ class Message(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.text[:50]
+        return self.text_summary()

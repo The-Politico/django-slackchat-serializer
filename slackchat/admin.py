@@ -123,6 +123,7 @@ class WebhookAdmin(admin.ModelAdmin):
 
 class MessageAdmin(admin.ModelAdmin):
     actions = ["serialize"]
+    list_display = ("timestamp", "channel", "user", "text_summary")
 
     def serialize(self, request, queryset):
         for msg in queryset:

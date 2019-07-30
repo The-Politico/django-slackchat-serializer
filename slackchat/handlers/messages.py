@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 from markslack import MarkSlack
@@ -10,6 +11,8 @@ from slackchat.models import Channel, KeywordArgument, Message, User
 from .attachments import handle as handle_attachment
 
 ignored_subtypes = ["group_join", "file_share", "group_archive"]
+
+logger = logging.getLogger(__name__)
 
 
 def strptimestamp(timestamp):
@@ -84,6 +87,8 @@ def handle(id, event):
         channel = Channel.objects.get(api_id=event.get("channel"))
     except ObjectDoesNotExist:
         return
+
+    logger.info("Received slackchat channel message from Slack")
 
     subtype = event.get("subtype", None)
     if subtype in ignored_subtypes:
