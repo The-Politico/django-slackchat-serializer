@@ -126,12 +126,26 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = ""
 
-SLACKCHAT_SLACK_VERIFICATION_TOKEN = os.getenv(
-    "SLACK_VERIFICATION_TOKEN", None
+# django-slackchat-serializer settings.
+if "CMS_TOKEN" in os.environ:
+    SLACKCHAT_CMS_TOKEN = os.environ.get("CMS_TOKEN")
+
+SLACKCHAT_DEFAULT_OWNER = os.environ.get("SLACK_SUPERUSER", "UELJYGUAJ")
+
+SLACKCHAT_MANAGERS = [os.environ.get("SLACK_SUPERUSER", "UELJYGUAJ")]
+
+SLACKCHAT_PUBLISH_ROOT = os.environ.get(
+    "PUBLISH_ROOT", "https://politico.com/interactives/live-analysis/"
 )
-SLACKCHAT_SLACK_API_TOKEN = os.getenv("SLACK_API_TOKEN", None)
-SLACKCHAT_PUBLISH_ROOT = "https://politico.com/interactives/live-analysis/"
-SLACKCHAT_TEAM_ROOT = "https://briz-playground.slack.com/"
-SLACKCHAT_MANAGERS = ["UELJYGUAJ"]
-SLACKCHAT_DEFAULT_OWNER = "UELJYGUAJ"
-SLACK_WEBHOOK_VERIFICATION_TOKEN = "%032x" % random.getrandbits(128)
+
+SLACKCHAT_SLACK_API_TOKEN = os.environ.get("SLACK_API_TOKEN")
+
+SLACKCHAT_SLACK_VERIFICATION_TOKEN = os.environ.get("SLACK_VERIFICATION_TOKEN")
+
+SLACKCHAT_TEAM_ROOT = os.environ.get(
+    "TEAM_ROOT", "https://briz-playground.slack.com/"
+)
+
+SLACK_WEBHOOK_VERIFICATION_TOKEN = os.environ.get(
+    "WEBHOOK_VERIFICATION", "%032x" % random.getrandbits(128)
+)
