@@ -4,15 +4,15 @@ from .base import CMSBase
 
 
 class CMSList(CMSBase):
-    template_name = "list.html"
+    template_name = "slackchat/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context["data"] = CMSBase.prep_data_for_injection(
-            Channel.objects.order_by('publish_time', 'title'),
+            Channel.objects.order_by("publish_time", "title"),
             ChannelCMSSerializer,
-            many=True
+            many=True,
         )
 
         context["all_chat_types"] = CMSBase.prep_data_for_injection(

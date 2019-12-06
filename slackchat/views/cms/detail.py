@@ -10,7 +10,7 @@ from .base import CMSBase
 
 
 class CMSDetail(CMSBase):
-    template_name = "detail.html"
+    template_name = "slackchat/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,8 +37,7 @@ class CMSDetail(CMSBase):
                 user = get_object_or_404(User, api_id=settings.DEFAULT_OWNER)
 
             context["user"] = CMSBase.prep_data_for_injection(
-                user,
-                UserCMSSerializer,
+                user, UserCMSSerializer
             )
             context["data"] = CMSBase.prep_data_for_injection({}, None)
             context["chat_type"] = CMSBase.prep_data_for_injection({}, None)
