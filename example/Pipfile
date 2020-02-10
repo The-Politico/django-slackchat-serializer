@@ -6,22 +6,22 @@ name = "pypi"
 [packages]
 django = "==2.1.4"
 dj-database-url = "*"
-djangorestframework = "*"
+djangorestframework = "==3.9.0"
 django-rest-swagger = "*"
 emoji = "*"
 markdown = "*"
-markslack = "*"
+markslack = "==0.0.7"
 pytz = "*"
 pillow = "*"
 "flake8" = "*"
 slacker = "*"
 celery = "*"
-slackchat = {path = "./..", editable = true}
+slackchat = {path = "./..",editable = true}
 tqdm = "*"
 django-foreignform = ">=0.0.5"
 setuptools = "*"
 twine = "*"
-"ed0a5ba" = {path = "./..", editable = true}
+ed0a5ba = {path = "./..",editable = true}
 
 [requires]
 python_version = "3.6"
