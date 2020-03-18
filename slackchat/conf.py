@@ -34,6 +34,10 @@ Settings.SLACK_API_TOKEN = getattr(
     project_settings, "SLACKCHAT_SLACK_API_TOKEN", None
 )
 
+Settings.SLACK_LOGGER = getattr(
+    project_settings, "SLACKCHAT_SLACK_LOGGER", "slackchat"
+)
+
 Settings.WEBHOOK_VERIFICATION_TOKEN = getattr(
     project_settings, "SLACK_WEBHOOK_VERIFICATION_TOKEN", "slackchat"
 )

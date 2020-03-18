@@ -1,10 +1,12 @@
 # import json
 
+
 # from django.conf import settings as project_settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from slackchat.conf import settings
+from slackchat.utils import log_event
 
 from ..handlers import (
     handle_message,
@@ -28,9 +30,11 @@ class Events(APIView):
         # print(json.dumps(slack_message, indent=2))
 
         if slack_message.get("token") != settings.SLACK_VERIFICATION_TOKEN:
+            log_event(403, "Forbidden")
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         if slack_message.get("type") == "url_verification":
+            log_event(200, "Verification")
             return Response(
                 data=slack_message.get("challenge"), status=status.HTTP_200_OK
             )
