@@ -6,7 +6,6 @@ from urllib.parse import urljoin
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.encoding import escape_uri_path
 from django.utils.safestring import mark_safe
 from markdown import markdown
@@ -22,7 +21,7 @@ class Channel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     api_id = models.SlugField(
-        max_length=10,
+        max_length=15,
         null=True,
         blank=True,
         editable=False,
@@ -30,7 +29,7 @@ class Channel(models.Model):
     )
 
     team_id = models.SlugField(
-        max_length=10,
+        max_length=15,
         null=True,
         blank=True,
         editable=False,
