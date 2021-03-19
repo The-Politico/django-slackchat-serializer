@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 django = "==2.1.4"
 dj-database-url = "*"
-djangorestframework = "==3.9.0"
+djangorestframework = "==3.11.2"
 django-rest-swagger = "*"
 emoji = "*"
 markdown = "*"
